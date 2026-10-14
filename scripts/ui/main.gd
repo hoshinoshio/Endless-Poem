@@ -1,6 +1,6 @@
 extends Control
 
-const FONT = preload("res://assets/msyh.ttc")
+const FONT = preload("res://assets/fonts/SourceHanSansSC-Regular.otf")
 const Ui = preload("res://scripts/ui/ui_kit.gd")
 const CollectionStore = preload("res://scripts/progression/collection_store.gd")
 const StartMenu = preload("res://scripts/ui/start_menu.gd")
@@ -13,6 +13,7 @@ var save_path = "user://chapter_one.json"
 var store = CollectionStore.new()
 var page
 var overlay
+var return_button
 var screen = "start_menu"
 var evidence = []
 var record_choice = ""
@@ -117,7 +118,7 @@ func show_time_authority_collection():
 			page.add_child(face)
 			for entry in catalog:
 				if entry.id == gifts[i].type: face.configure(entry)
-	Ui.button("返回主菜单", Rect2(550, 743, 340, 62), show_start_menu, page, true)
+	return_button = Ui.button("返回主菜单", Rect2(550, 743, 340, 62), show_start_menu, page, true)
 
 func _unhandled_input(event):
 	if screen == "exploration": return

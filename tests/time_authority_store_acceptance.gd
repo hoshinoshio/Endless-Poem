@@ -21,7 +21,7 @@ func _init() -> void:
 	var path = fresh_path("fresh")
 	var store = Store.new()
 	verify(store.initialize_time_authority(path), "fresh authority initialization")
-	verify(store.get_authority_loadout().is_empty() and store.collection.is_empty() and not store.data.authority_granted, "new game grants no old or time cards")
+	verify(store.get_authority_loadout().is_empty() and not store.data.authority_granted, "new game grants no time cards")
 	var run = {"segment": "device", "coins": 0, "extra": {"proof": 17}}
 	var checkpoint = {"segment": "device", "position": [12, 34]}
 	verify(store.unlock_time_authority(run, checkpoint), "repair commits successfully")
@@ -33,7 +33,7 @@ func _init() -> void:
 	reloaded.save_metadata({"exploration_run": {"segment": "later", "authority_unlocked": true, "authority_granted": true}})
 	var before_retry = reloaded.data.duplicate(true)
 	verify(reloaded.unlock_time_authority(run, checkpoint) and reloaded.data == before_retry, "duplicate repair does not duplicate or rewind progress")
-	verify(reloaded.claimed_rewards.count("authority:stalled_device") == 1, "unique repair source marker")
+	verify(reloaded.data.claimed_rewards.count("authority:stalled_device") == 1, "unique repair source marker")
 	var legacy_path = fresh_path("legacy")
 	var legacy_data = {"collection": [{"id": "old", "type": "fire", "custom": {"quality": 9}}], "equipped_ids": ["old"], "claimed_rewards": ["legacy:proof"], "evidence": ["star"], "chapter_complete": true, "record_choice": "retain", "intro_accepted": true, "exploration_run": {"segment": "legacy", "coins": 99}, "exploration_checkpoint": {"segment": "legacy", "position": [44, 55]}}
 	var file = FileAccess.open(legacy_path, FileAccess.WRITE)
@@ -41,13 +41,12 @@ func _init() -> void:
 	file.close()
 	# JSON's numeric representation is floating point; compare against the same disk format.
 	legacy_data = JSON.parse_string(JSON.stringify(legacy_data))
-	var migrated = Store.new()
-	verify(migrated.initialize_time_authority(legacy_path), "legacy migration succeeds")
-	verify(migrated.collection == legacy_data.collection and migrated.equipped_ids == legacy_data.equipped_ids and migrated.claimed_rewards == legacy_data.claimed_rewards, "legacy entities including custom metadata preserved verbatim")
-	verify(migrated.data.evidence == legacy_data.evidence and migrated.data.chapter_complete and migrated.data.record_choice == "retain" and migrated.data.intro_accepted, "evidence chapter record and intro preserved")
-	verify(migrated.data.archive_exploration_run == legacy_data.exploration_run and migrated.data.archive_exploration_checkpoint == legacy_data.exploration_checkpoint and migrated.data.exploration_run.is_empty() and migrated.data.exploration_checkpoint.is_empty(), "old exploration archived and fresh active guide starts empty")
-	migrated.save_metadata({"exploration_run": {"segment": "new"}})
-	verify(migrated.initialize_time_authority(legacy_path) and migrated.data.exploration_run.segment == "new" and migrated.data.archive_exploration_run == legacy_data.exploration_run, "migration runs only once")
+	var discarded = Store.new()
+	verify(discarded.initialize_time_authority(legacy_path), "save from another ruleset loads")
+	verify(not discarded.data.has("collection") and not discarded.data.has("evidence") and not discarded.data.has("exploration_run") and discarded.data.claimed_rewards.is_empty(), "save from another ruleset is discarded")
+	verify(discarded.data.active_ruleset == Store.TIME_RULESET and not discarded.data.authority_granted, "discarded save starts a fresh time-authority game")
+	discarded.save_metadata({"evidence": ["star"]})
+	verify(discarded.initialize_time_authority(legacy_path) and discarded.data.evidence == ["star"], "current-ruleset save is kept on reload")
 	var failing = Store.new()
 	var failure_path = fresh_path("failure")
 	failing.initialize_time_authority(failure_path)
@@ -56,8 +55,6 @@ func _init() -> void:
 	verify(not failing.unlock_time_authority(run, checkpoint) and failing.data == before_failure and failing.get_authority_loadout().is_empty(), "failed write leaves no half grant in memory")
 	var disk = Store.new()
 	verify(disk.initialize_time_authority(failure_path) and not disk.data.authority_granted and disk.get_authority_loadout().is_empty(), "failed transaction leaves original disk unchanged")
-	var legacy_api = Store.new()
-	verify(legacy_api.initialize(fresh_path("legacy_api")) and legacy_api.collection.size() == 10, "legacy initializer remains compatible")
 	for cleanup_path in paths:
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(cleanup_path))
 	print("TIME_AUTHORITY_STORE_ACCEPTANCE checks=", checks, " failures=", failures)

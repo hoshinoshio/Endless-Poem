@@ -12,7 +12,7 @@ func test_world() -> void:
 	var path := "user://pixel_world_fresh_%s.json" % Time.get_ticks_usec()
 	var store := Store.new()
 	check(store.initialize_time_authority(path),"fresh normal store initializes")
-	check(store.get_authority_loadout().is_empty() and store.collection.is_empty() and not store.data.authority_granted,"default integration grants no abilities")
+	check(store.get_authority_loadout().is_empty() and not store.data.authority_granted,"default integration grants no abilities")
 	var world := World.new()
 	root.add_child(world)
 	world.configure({"ruleset":"time_authority_v2","position":[200,1900],"authority_unlocked":false,"authority_tutorial_step":0})
@@ -27,8 +27,9 @@ func test_world() -> void:
 		return
 	var hero = world.player.continuous_motion
 	check(world.player.hitbox().size==Vector2(46,130),"hero hitbox matches approved compact body")
-	var capsule: CapsuleShape2D = world.player.get_child(0).shape
-	check(capsule.height==130 and capsule.radius==22 and world.player.get_child(0).position.y==-65,"capsule matches compact body and foot origin")
+	var body: CollisionShape2D = world.player.find_children("*","CollisionShape2D",false,false)[0]
+	var capsule: CapsuleShape2D = body.shape
+	check(capsule.height==130 and capsule.radius==22 and body.position.y==-65,"capsule matches compact body and foot origin")
 	for i in 20:
 		world.advance_simulation(1.0/60)
 		await physics_frame
@@ -44,7 +45,7 @@ func test_world() -> void:
 	world._advance_player_local(.1)
 	world._restore_player(hero_saved)
 	check(hero.presentation_state()==cast_pose and world.player.action_remaining==hero_saved.action_remaining,"rewind restores cast pose and duration")
-	world.nearest_interaction = "testimony"
+	world.player.position = npc.position + Vector2(-60,0)
 	world.interact()
 	check(npc.state=="talk" and npc.sampled_animation=="talk","testimony samples authored talk")
 	var recorded := []

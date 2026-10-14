@@ -39,6 +39,8 @@ if ($Import) {
 if ($Render) { $gameArguments += @('--resolution', '1440x900', '--position', '120,60') }
 $windowStyle = 'Hidden'
 $gameProcess = Start-Process -FilePath $godotPath -ArgumentList $gameArguments -WorkingDirectory $gameRoot -WindowStyle $windowStyle -PassThru -RedirectStandardOutput $outPath -RedirectStandardError $errPath
+# Reading Handle makes the process object keep ExitCode after exit.
+$null = $gameProcess.Handle
 if (-not $gameProcess.WaitForExit($TimeoutSeconds * 1000)) {
     $gameProcess.Kill()
     $gameProcess.WaitForExit()

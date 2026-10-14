@@ -70,7 +70,6 @@ func run_test() -> void:
 		press(session, KEY_E)
 		check(signals_received.size() == signal_count + 1 and signals_received.back() == id and is_instance_valid(session.dialog), id + " native E opens appropriate interface")
 		press(session, KEY_ESCAPE)
-	check(not session.buy_card("supply_lamp","fire"), "legacy fire shop remains disabled")
 	session.queue_free()
 	await process_frame
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(path))

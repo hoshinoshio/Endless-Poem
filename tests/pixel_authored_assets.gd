@@ -10,7 +10,7 @@ func run_test():
 	var data = JSON.parse_string(FileAccess.get_file_as_string("res://assets/pixel_v1/manifest.json"))
 	var rig = load("res://scripts/visuals/pixel_actor.gd").new()
 	check(rig.configure(data.actors.player),"actual authored assets load")
-	check(rig.textures.size()==32,"32 supplied source frames present")
+	check(rig.textures.size()==48,"48 supplied source frames present")
 	var valid := true
 	var hashes := {}
 	for texture in rig.textures:
@@ -18,7 +18,7 @@ func run_test():
 		valid = valid and image.get_size()==Vector2i(48,64) and image.detect_alpha()!=Image.ALPHA_NONE
 		hashes[image.get_data().hex_encode().sha256_text()] = true
 	check(valid,"every output frame is native48x64 with alpha")
-	check(hashes.size()==32,"all32 authored raster frames are distinct")
+	check(hashes.size()==48,"all 48 authored raster frames are distinct")
 	var config: Dictionary = data.actors.player
 	var inside := true
 	for entry in config.source_frames:
