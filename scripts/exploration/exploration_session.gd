@@ -6,7 +6,7 @@ const Opening = preload("res://scripts/onboarding/opening_sequence.gd")
 const AuthorityTutorial = preload("res://scripts/onboarding/authority_tutorial.gd")
 const TimeCard = preload("res://scripts/authority/time_card.gd")
 const Temporal = preload("res://scripts/authority/temporal_controller.gd")
-const FONT = preload("res://assets/msyh.ttc")
+const FONT = preload("res://assets/fonts/SourceHanSansSC-Regular.otf")
 const ForkGuidance = preload("res://scripts/exploration/fork_guidance.gd")
 var store
 var world

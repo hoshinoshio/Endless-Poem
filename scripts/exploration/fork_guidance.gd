@@ -1,7 +1,7 @@
 extends Control
 ## Contextual wayfinding only; the world remains responsible for route selection.
 const NARRATION := "前面的路分开了。往上走，也许能看得更远；沿着下面走，说不定会有别的发现。慢慢来，不必急着决定。想回头看看另一条路，随时都可以。"
-const FONT = preload("res://assets/msyh.ttc")
+const FONT = preload("res://assets/fonts/SourceHanSansSC-Regular.otf")
 var hint: Panel
 var up_text: Label
 var down_text: Label

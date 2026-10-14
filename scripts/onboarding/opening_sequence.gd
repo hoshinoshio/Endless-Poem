@@ -1,6 +1,6 @@
 extends Control
 signal accepted
-const FONT = preload("res://assets/msyh.ttc")
+const FONT = preload("res://assets/fonts/SourceHanSansSC-Regular.otf")
 const FIRST = "沉睡的神明即将苏醒"
 const SECOND = "世界在崩坏"
 const SURVIVOR = "你是最终的幸存者、亦是被寄以希望的无暇之人"

@@ -1,6 +1,6 @@
 extends Control
 signal card_clicked(card_id: String)
-const FONT = preload("res://assets/msyh.ttc")
+const FONT = preload("res://assets/fonts/SourceHanSansSC-Regular.otf")
 
 var card: Dictionary = {}
 var selected: bool = false

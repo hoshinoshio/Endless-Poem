@@ -39,14 +39,14 @@ func _ready() -> void:
 	var label := Label.new()
 	label.position = Vector2(24,20)
 	label.text = "月璃 · 像素动作样段"
-	label.add_theme_font_override("font",load("res://assets/msyh.ttc"))
+	label.add_theme_font_override("font",load("res://assets/fonts/SourceHanSansSC-Regular.otf"))
 	label.add_theme_font_size_override("font_size",19)
 	label.modulate = Color(0.82,0.86,0.92)
 	canvas.add_child(label)
 	var guide := Label.new()
 	guide.position = Vector2(24,50)
 	guide.text = "A / D 或 ← / → 移动   Shift 奔跑   空格 跳跃   Esc 暂停   R 重置"
-	guide.add_theme_font_override("font",load("res://assets/msyh.ttc"))
+	guide.add_theme_font_override("font",load("res://assets/fonts/SourceHanSansSC-Regular.otf"))
 	guide.add_theme_font_size_override("font_size",13)
 	guide.modulate = Color(0.66,0.72,0.81)
 	canvas.add_child(guide)
@@ -54,7 +54,7 @@ func _ready() -> void:
 	pause_label.position = Vector2(24,74)
 	pause_label.text = "已暂停"
 	pause_label.visible = false
-	pause_label.add_theme_font_override("font",load("res://assets/msyh.ttc"))
+	pause_label.add_theme_font_override("font",load("res://assets/fonts/SourceHanSansSC-Regular.otf"))
 	canvas.add_child(pause_label)
 
 func _physics_process(delta: float) -> void:

@@ -36,11 +36,11 @@ func _ready() -> void:
 	if has_serif:
 		var serif := SystemFont.new()
 		serif.font_names = serif_names
-		if ResourceLoader.exists("res://assets/msyh.ttc"):
-			serif.fallbacks = [load("res://assets/msyh.ttc")]
+		if ResourceLoader.exists("res://assets/fonts/SourceHanSansSC-Regular.otf"):
+			serif.fallbacks = [load("res://assets/fonts/SourceHanSansSC-Regular.otf")]
 		font = serif
-	elif ResourceLoader.exists("res://assets/msyh.ttc"):
-		font = load("res://assets/msyh.ttc")
+	elif ResourceLoader.exists("res://assets/fonts/SourceHanSansSC-Regular.otf"):
+		font = load("res://assets/fonts/SourceHanSansSC-Regular.otf")
 	else:
 		var fallback := SystemFont.new()
 		fallback.font_names = PackedStringArray(["Microsoft YaHei", "sans-serif"])

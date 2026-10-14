@@ -1,6 +1,6 @@
 extends Control
 signal step_changed(step: int)
-const FONT = preload("res://assets/msyh.ttc")
+const FONT = preload("res://assets/fonts/SourceHanSansSC-Regular.otf")
 const HINTS = ["引路灯熄灭了。前方的装置也停摆了。", "停摆装置位于上方的低台。", "装置的齿轮卡住了。"]
 var _step = 0
 var _hint: Label

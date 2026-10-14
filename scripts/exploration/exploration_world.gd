@@ -48,7 +48,7 @@ var _gates := Map.gates()
 var _configured := false
 var _last_landings := 0
 var _camera_position := Vector2.ZERO
-var _font = preload("res://assets/msyh.ttc")
+var _font = preload("res://assets/fonts/SourceHanSansSC-Regular.otf")
 var _module: Texture2D
 var _background_material: ShaderMaterial
 var _backgrounds: Array[Sprite2D] = []
