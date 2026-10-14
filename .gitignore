@@ -5,7 +5,9 @@
 # Local exports and generated verification output.
 /build/
 *.log
-/docs/verification/*frames*/
+/logs/
+# Evidence renders (screenshots, frame dumps, videos) stay outside git.
+/docs/verification/
 __pycache__/
 *.py[cod]
 

@@ -22,7 +22,7 @@ if (-not $godotPath) {
 if (-not $godotPath) {
     throw 'Godot executable unavailable. Open project.godot with Godot or put Godot.exe beside it.'
 }
-$logRoot = Join-Path $gameRoot 'docs\verification'
+$logRoot = Join-Path $gameRoot 'logs'
 [void][System.IO.Directory]::CreateDirectory($logRoot)
 $safeLogName = $LogName -replace '[^a-zA-Z0-9_-]', '_'
 $outPath = Join-Path $logRoot ($safeLogName + '_stdout.log')
