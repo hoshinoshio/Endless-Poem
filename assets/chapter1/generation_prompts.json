@@ -1,0 +1,88 @@
+{
+  "date": "2026-10-05",
+  "tool": "built-in image_gen",
+  "approved_style": "A pixel brass observatory",
+  "atlas_repack_prompt": "Edit this four-pose sprite sheet ONLY to repack the SAME four full poses cleanly into a SQUARE 2x2 atlas. DO NOT change character identity, costume, facing, object design or palette. Need a production 2D game asset with FOUR WELL SEPARATED complete figures: top-left idle, top-right cast/attack, bottom-left hurt, bottom-right defeat. Canvas square2048x2048, four equal1024x1024 quadrants. In each quadrant character centered at x512 local and feet/lower-tip at y870 local. Use ONE SHARED body scale for all four poses, sized so the widest pose fits within700px; don't enlarge narrower poses. Leave a LARGE empty transparent gutter: no pixel at all within80px of the center horizontal or vertical dividing line, no figure touches another. All weapons, hair, robes, halos and effects contained within their own quadrant. No cut-off objects. Retain crisp pixel-art detail and clear face. REMOVE all erroneous red/green outline fringe and colored stray edge pixels; clean edges with native palette. Genuinely transparent RGBA background. No visible cell borders, checkerboard, numbers, labels, text, floor, environment or shadows. This is rearrangement and edge cleanup of supplied four poses, not a new design. Preserve first-reference subject, do not invent new accessories.",
+  "assets": [
+    {
+      "key": "observatory_courtyard",
+      "transparent": false,
+      "refs": [
+        "C:/Users/hoshi/Endless Poem/endless-poem/art_review/2026-10-04/A_pixel_brass_observatory.png"
+      ],
+      "prompt": "Production 2D GAME BACKGROUND ONLY for the user's APPROVED style A in reference image. Match the upper scene's finely detailed pixel art, old brass observatory, indigo banners, stone balustrades and suspended pre-disaster gold sunset. Generate one clean 16:10 environment image, ideally 1440x900, no characters, no enemies, no magical items floating in combat area, no UI, no text, no captions, no contact sheet. Recompose as a wide playable observatory courtyard: layered distant bell towers, arched bridge and armillary instruments in upper 45 percent, lanterns and subtle festival ribbons at sides. Horizon at 48 percent. Flat continuous readable stone terrace across full width from y=50% to bottom, evenly lit; this is where separate Godot character sprites stand at y=61%. Keep central playfield from x15% to90%, y30%-63% free of giant props so small characters silhouette clearly. Subtle engraved circular tracks on floor, no big bright magic circles under characters. Reference image only establishes chosen environment/materials/palette; remove its entire bottom unit lineup and all labels. Authentic detailed pixel clusters, no smooth oil painting, no blur overlay. Warm sunset and muted blue shadows, lower foreground darker for game HUD legibility. Background is a standalone reusable environment, never bake units or HUD into it.",
+      "source": "C:\\Users\\hoshi\\.codex\\generated_images\\01a0fc86-bc4d-7db1-be83-13a229f5d520\\exec-cfc23808-1a02-464c-88ec-552742d22e42.png"
+    },
+    {
+      "key": "moonli_authority_strip",
+      "transparent": true,
+      "refs": [
+        "C:/Users/hoshi/Endless Poem/endless-poem/assets/moonli_battle_v1.png",
+        "C:/Users/hoshi/Endless Poem/endless-poem/art_review/2026-10-04/A_pixel_brass_observatory.png"
+      ],
+      "prompt": "Use case identity-preserve game sprite edit. FIRST reference is the EXACT approved Moonli v1 character identity and costume; second reference is approved pixel scene style A only. Make a production transparent 2D sprite strip, EXACTLY FOUR equal-width slots in ONE horizontal row, wide 3:1 canvas ideally1536x512, each slot384x512. Same character at same scale, same centered x within each slot, boots baseline at y480 in every slot; keep all hair and clothes within their own slot with padding. Character faces 3/4 toward screen RIGHT, enemy on right. Preserve silver-white long hair, aqua blue eyes, black high collar inner suit, white split longcoat/dress with gold trim, black/gold boots, original feminine face and outfit geometry. User explicitly changes ONLY combat focus: REMOVE the magical BOOK from all frames and remove the separate floating brass arc and all blue glow effects from source; both hands visibly empty. A time authority clock and attack beams will be separate Godot effects behind her, DO NOT draw clock, circle, energy streams, sparkles, background or shadow floor in this asset. Frame1 calm ready stance with empty open hand; Frame2 clear casting pose forward open palm and subtle coat/hair motion; Frame3 recoil hit pose, readable but same facing; Frame4 defeated kneeling/resting pose leaning forward, same outfit and head, not lying beyond slot. Full entire body each slot, no cropped hair/weapons, no additional people, no labels, no grid lines. High detail hand-placed PIXEL ART matching first reference but crisp enough to reduce to217px tall, stable silhouette/palette/proportions, minimal pose change to avoid identity drift. Genuinely transparent RGBA canvas, no checkerboard or colored matte.",
+      "source": "C:\\Users\\hoshi\\.codex\\generated_images\\01a0fc86-bc4d-7db1-be83-13a229f5d520\\exec-611fd7cb-8b0b-4913-8d84-8e90ac7b420e.png",
+      "atlas_source": "C:\\Users\\hoshi\\.codex\\generated_images\\01a0fc86-bc4d-7db1-be83-13a229f5d520\\exec-adabe543-d3e7-47dd-84ec-6dc1b6980fee.png"
+    },
+    {
+      "key": "patrol_guard_strip",
+      "transparent": true,
+      "refs": [
+        "C:/Users/hoshi/Endless Poem/endless-poem/art_review/2026-10-04/A_pixel_brass_observatory.png"
+      ],
+      "prompt": "Production transparent 2D game animation sheet derived from approved reference A. Reproduce ONLY the patrol halberd guard in the lower-left unit lineup: segmented old brass armor, dark blue cloth tabard, clock ring head with concealed face, long pointed halberd. Mirror orientation to face screen LEFT toward the player. One row of EXACTLY FOUR equal slots, wide3:1 ideally1536x512, eachslot384x512, identical body scale and feet baseline at480. Frame1 idle holding halberd diagonally up-left; frame2 short thrust attack left with halberd kept entirely inside slot; frame3 hit recoil; frame4 kneeling defeated with head and pole lowered, all parts inside slot. Consistent fully visible body, all four frames same outfit, fine crisp high-detail pixel clusters not painted blur. No other units from reference, no environment, no ground/shadow, no labels, no text, no grid, no magic books. Genuinely transparent RGBA background. Each pose must leave 20px margin and never overlap neighboring slot. This is playable sprite production, not concept presentation.",
+      "source": "C:\\Users\\hoshi\\.codex\\generated_images\\01a0fc86-bc4d-7db1-be83-13a229f5d520\\exec-8e998875-1f34-43e6-8293-5988ae11554c.png",
+      "atlas_source": "C:\\Users\\hoshi\\.codex\\generated_images\\01a0fc86-bc4d-7db1-be83-13a229f5d520\\exec-3c5a7a40-4fc9-48f8-9936-f1ffd0a16f84.png"
+    },
+    {
+      "key": "brass_instrument_strip",
+      "transparent": true,
+      "refs": [
+        "C:/Users/hoshi/Endless Poem/endless-poem/art_review/2026-10-04/A_pixel_brass_observatory.png"
+      ],
+      "prompt": "Production transparent 2D game four-frame sprite strip from the approved styleA image. ONLY the brass celestial instrument unit shown second from left in bottom lineup: spherical old gold brass concentric armillary hoops enclosing blue starlight core, three small suspended orbital counterweights, pointed hanging lower spindle. Exact same design and silhouette in all frames, face slightly LEFT. One horizontal row EXACTLY FOUR equal-width slots on wide3:1 canvas ideally1536x512. Same object scale and center in each slot, lower tip baseline480. Frame1 idle armillary; frame2 guarding action with hoops tilted open slightly and core brightening; frame3 small hit recoil with shifted rings; frame4 deactivated folded rings lowered inward but still recognizable, no flying debris beyond slot. Detailed authentic pixel art clusters, indigo shadows and warm old brass highlights match referenceA. Genuinely transparent RGBA, no background, floor shadow, text, grid, other units or montage. Separate complete sprite per slot, generous transparent margins, no external glowing aura baked in.",
+      "source": "C:\\Users\\hoshi\\.codex\\generated_images\\01a0fc86-bc4d-7db1-be83-13a229f5d520\\exec-11d00554-7d52-4138-95e7-0736c971a1d9.png",
+      "atlas_source": "C:\\Users\\hoshi\\.codex\\generated_images\\01a0fc86-bc4d-7db1-be83-13a229f5d520\\exec-96e5628e-b021-4e82-82d3-db706e9f2bfb.png"
+    },
+    {
+      "key": "echo_observer_strip",
+      "transparent": true,
+      "refs": [
+        "C:/Users/hoshi/Endless Poem/endless-poem/art_review/2026-10-04/A_pixel_brass_observatory.png"
+      ],
+      "prompt": "Production transparent2D game sprite strip of ONLY the echo observer in approved referenceA bottom lineup third unit: humanoid observatory astronomer with white/indigo/gold layered coat, cap, long brass telescope on tripod, subtle pale blue echo silhouette immediately behind body. Must face LEFT to observe player on left. One row EXACTLY FOUR same-sized slots on wide3:1 canvas ideally1536x512. Consistent body proportion/costume, each centered within384x512 slot, feet/tripodbaseline480. Frame1 idle leaning at left-pointing telescope; frame2 reciting/casting pose one hand raised beside scope; frame3 hit recoil from left, scope stays intact; frame4 slumped seated/kneeling by tripod, no extra person. Echo silhouette is a faint small immediately adjacent afterimage, not a second full unit or wide ghost trail. High-detail crisp pixel art old brass/indigo/silver palette matching reference. All parts inside each slot with20pxpadding. No environment, floor, labels, gridlines, symbols, text or books. Real transparent RGBA canvas.",
+      "source": "C:\\Users\\hoshi\\.codex\\generated_images\\01a0fc86-bc4d-7db1-be83-13a229f5d520\\exec-6cf569e7-bec8-48f0-a739-a6148d944164.png",
+      "atlas_source": "C:\\Users\\hoshi\\.codex\\generated_images\\01a0fc86-bc4d-7db1-be83-13a229f5d520\\exec-7ee4ce0c-23a1-43ea-8064-827870989580.png"
+    },
+    {
+      "key": "hour_guard_strip",
+      "transparent": true,
+      "refs": [
+        "C:/Users/hoshi/Endless Poem/endless-poem/art_review/2026-10-04/A_pixel_brass_observatory.png"
+      ],
+      "prompt": "Production transparent2D game fourframe strip, an ELITE full-hour halberd guard variant of the patrol guard in approved referenceA. Preserve faction old brass segmented armor, indigo cloth, faceless clockring head. Visually differentiate by broader layered shoulderplate, longer split tabard and sturdier halberd with additional clock tick crescent guard; not merely recolor, no unrelated horns/spikes. Face LEFT. EXACTLY FOUR equal slots ONE horizontal row wide3:1 ideally1536x512, same body scale and feetbaseline480. Frame1 firm ready stance; frame2 clearly braced powerful forward lunge with halberd toward left, entireweaponinside slot; frame3 recoil hit; frame4 kneeling defeated, halberd lowered. Stable design, transparent margins20px, no overlap neighboring slots. Crisp finely detailed pixelart, warm weathered brass and midnightblue cloth matching approvedsceneA. No floor shadow, background, UI, grid, labels, text, books or otherunits. Genuine transparentRGBA.",
+      "source": "C:\\Users\\hoshi\\.codex\\generated_images\\01a0fc86-bc4d-7db1-be83-13a229f5d520\\exec-04eca290-3850-4eed-b08b-542b1faf5b11.png",
+      "atlas_source": "C:\\Users\\hoshi\\.codex\\generated_images\\01a0fc86-bc4d-7db1-be83-13a229f5d520\\exec-db1b6207-c112-4030-973f-63c25c0def0d.png"
+    },
+    {
+      "key": "chronos_trial_strip",
+      "transparent": true,
+      "refs": [
+        "C:/Users/hoshi/Endless Poem/endless-poem/art_review/2026-10-04/A_pixel_brass_observatory.png"
+      ],
+      "prompt": "Production transparent2D game sprite strip of ONLY Chronos trial aspect from referenceA bottom lineup fourth character. Faithfully preserve that handsome pale-haired humanoid guide in elaborate white/indigo/oldgold robes, with a large clock-tick halo and unfolding stargate engraved rings BEHIND him, no demon/reaper/scythe. Face3/4LEFT toward protagonist. Four equal slots ONE horizontal row wide3:1 ideally1536x512, eachslot384x512, same body and clockring scale, robehem baseline480. Frame1 dignified idle; frame2 one hand extends casting gesture, clock hands change position subtly and rings open; frame3 brief recoil but face identity and costume stay same; frame4 kneeling yielding defeat pose with ring dimmed, not corpse, fitting same slot. Remove floating book from reference, emptyhands; no detached book props. Whole clock halo and cloak entirely within each slot with20pxmargins, no cropping. Finely detailed authenticpixel art, crisp clusters matching referenceA, not smoothpainting. Genuine transparentRGBA, no background, floor/shadows, text, labels, UI or grid. Only same character four times.",
+      "source": "C:\\Users\\hoshi\\.codex\\generated_images\\01a0fc86-bc4d-7db1-be83-13a229f5d520\\exec-248b1206-13e8-4200-bec6-01a530775cce.png",
+      "atlas_source": "C:\\Users\\hoshi\\.codex\\generated_images\\01a0fc86-bc4d-7db1-be83-13a229f5d520\\exec-348c1f12-e38b-40d8-9598-1eddc76f426e.png"
+    },
+    {
+      "key": "time_anchor_strip",
+      "transparent": true,
+      "refs": [
+        "C:/Users/hoshi/Endless Poem/endless-poem/art_review/2026-10-04/A_pixel_brass_observatory.png"
+      ],
+      "prompt": "Production transparent2D game 4frame sprite strip of ONLY the small time anchor shown far right in approvedreferenceA bottomlineup. Exact motif: oldbrass slender vertical cross spindle, circular ring of tickmarks around luminous blue central star, small lateral pointers and hanging needle. This is enemy target object not magicbook. Four equalwidth slots ONE horizontalrow wide3:1 ideally1536x512, same scale center and lower tipbaseline480. Frame1 stableglow; frame2 brighter pulsing core with hand rotated; frame3 hit corefracture with few tiny nearby sparks containedinslot; frame4 extinguished broken ring folding inward, no wide debris. Preserve consistent silhouette/palette between frames, crisp fine pixelart with weatheredbrass and blue starlight. Everythingcontained within eachslot withclear transparentmargin. Genuine transparentRGBA, no scene, groundshadow, words, labels, borders, UI, additional items or checkerboard.",
+      "source": "C:\\Users\\hoshi\\.codex\\generated_images\\01a0fc86-bc4d-7db1-be83-13a229f5d520\\exec-6f4bc132-dc88-4c6e-ab19-b3b712452be8.png",
+      "atlas_source": "C:\\Users\\hoshi\\.codex\\generated_images\\01a0fc86-bc4d-7db1-be83-13a229f5d520\\exec-69e0a69b-ae15-47b1-8979-f1fe7dbfee2c.png"
+    }
+  ]
+}

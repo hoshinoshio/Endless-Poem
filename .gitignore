@@ -1,0 +1,18 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Local exports and generated verification output.
+/build/
+*.log
+/docs/verification/*frames*/
+__pycache__/
+*.py[cod]
+
+# Local secrets and machine-specific files.
+.env
+.env.*
+!.env.example
+export_credentials.cfg
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://dk1mno6tx0jin"]
+
+[node name="Node2D" type="Node2D" unique_id=381930807]
+position = Vector2(3584, 27392)

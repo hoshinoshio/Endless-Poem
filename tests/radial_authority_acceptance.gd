@@ -1,0 +1,57 @@
+extends SceneTree
+const FX = preload("res://scripts/world/time_authority_fx.gd")
+func _initialize() -> void:
+	_run.call_deferred()
+func _run() -> void:
+	var fx = FX.new()
+	root.add_child(fx)
+	fx.set_source(Vector2(235,416),217)
+	fx.cast("a",Vector2(1030,430))
+	var initial: Dictionary = fx.presentation_state()
+	assert(initial.beam_count == FX.STREAM_COUNT)
+	assert(initial.clock_projection.hour_marks==12 and initial.clock_projection.minute_marks==60)
+	assert(initial.clock_projection.hands==3 and initial.clock_projection.subdials==3)
+	var origins: Array = []
+	var quadrants: Array = []
+	for beam in fx.beams:
+		assert(is_equal_approx(beam.origin.distance_to(beam.source),126.0))
+		assert(not origins.has(beam.origin))
+		origins.append(beam.origin)
+		var offset: Vector2 = beam.origin-beam.source
+		if absf(offset.x)>1 and absf(offset.y)>1:
+			quadrants.append(Vector2(signf(offset.x),signf(offset.y)))
+		assert((fx.path_point(beam,.02)-fx.path_point(beam,0)).dot(beam.launch_direction)>0)
+		var launch_offset: Vector2 = fx.path_point(beam,.18)-beam.origin
+		assert(launch_offset.dot(beam.launch_direction)>20.0)
+		assert(absf(launch_offset.cross(beam.launch_direction))<1.0)
+		assert(fx.path_point(beam,1)==beam.end)
+		for sample in 101:
+			var point: Vector2 = fx.path_point(beam,float(sample)/100)
+			assert(point.x>=24 and point.y>=80 and point.y<=566)
+	assert(quadrants.size()==4)
+	fx.set_source(Vector2(250,390),217)
+	var relocated: Dictionary = fx.presentation_state()
+	assert(initial.streams==relocated.streams)
+	fx.cast("b",Vector2(1120,410))
+	assert(fx.beams.size()==16 and fx.has_beam("a") and fx.has_beam("b"))
+	fx.impact("a",Vector2(1030,430))
+	assert(fx.impacts[0].age<0.0 and fx.sparks.size()==24)
+	var frozen: Dictionary = fx.presentation_state()
+	fx.advance(0)
+	assert(frozen==fx.presentation_state())
+	fx.advance(.12)
+	assert(not fx.presentation_state().streams[0].arrived)
+	fx.advance(.08)
+	var moving: Dictionary = fx.presentation_state()
+	assert(moving.streams[0].tail_alpha[0]<moving.streams[0].tail_alpha[-1])
+	fx.advance(1)
+	assert(fx.beams.is_empty() and fx.sparks.is_empty() and fx.pulses.is_empty() and fx.impacts.is_empty())
+	fx.cast("player",Vector2(270,552))
+	assert(fx.beams.is_empty() and fx.glow>0 and fx.pulses.size()==1)
+	fx.advance(1)
+	fx.cast("",Vector2.ZERO)
+	assert(fx.beams.is_empty())
+	fx.advance(1)
+	assert(fx.pulses.is_empty())
+	print("RADIAL_AUTHORITY_ACCEPTANCE_PASS streams=8 quadrants=4 outward_tangents=true cached_geometry=true bounded_paths=true pause_freeze=true finite_lifetime=true")
+	quit()

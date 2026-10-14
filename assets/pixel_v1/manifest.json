@@ -1,0 +1,3389 @@
+{
+  "version": 1,
+  "ready": true,
+  "status": "approved_pixel_style_active_full_roster",
+  "frame_size": [
+    48,
+    64
+  ],
+  "actors": {
+    "player": {
+      "scale": 3,
+      "frame_anchor": [
+        35,
+        64
+      ],
+      "source_scale": 0.16,
+      "walk_cycle_distance": 180,
+      "run_cycle_distance": 270,
+      "source_frames": [
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            89,
+            23,
+            212,
+            250
+          ],
+          "anchor": [
+            153,
+            250
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            447,
+            25,
+            195,
+            248
+          ],
+          "anchor": [
+            147,
+            248
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            783,
+            25,
+            193,
+            248
+          ],
+          "anchor": [
+            135,
+            248
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            1135,
+            25,
+            199,
+            248
+          ],
+          "anchor": [
+            162,
+            248
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            86,
+            302,
+            218,
+            251
+          ],
+          "anchor": [
+            154,
+            251
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            436,
+            303,
+            213,
+            250
+          ],
+          "anchor": [
+            157,
+            250
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            783,
+            301,
+            234,
+            252
+          ],
+          "anchor": [
+            170,
+            252
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            1145,
+            302,
+            207,
+            251
+          ],
+          "anchor": [
+            174,
+            251
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            54,
+            583,
+            262,
+            230
+          ],
+          "anchor": [
+            183,
+            230
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            427,
+            583,
+            261,
+            230
+          ],
+          "anchor": [
+            193,
+            230
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            777,
+            583,
+            271,
+            234
+          ],
+          "anchor": [
+            212,
+            234
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            1141,
+            582,
+            262,
+            235
+          ],
+          "anchor": [
+            208,
+            240
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            47,
+            835,
+            277,
+            233
+          ],
+          "anchor": [
+            199,
+            233
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            406,
+            828,
+            266,
+            238
+          ],
+          "anchor": [
+            197,
+            243
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            777,
+            836,
+            255,
+            232
+          ],
+          "anchor": [
+            191,
+            237
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_locomotion_raw.png",
+          "rect": [
+            1135,
+            831,
+            260,
+            237
+          ],
+          "anchor": [
+            205,
+            237
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            88,
+            18,
+            197,
+            258
+          ],
+          "anchor": [
+            156,
+            258
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            450,
+            18,
+            197,
+            258
+          ],
+          "anchor": [
+            156,
+            258
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            815,
+            18,
+            194,
+            258
+          ],
+          "anchor": [
+            153,
+            258
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            1151,
+            18,
+            201,
+            258
+          ],
+          "anchor": [
+            153,
+            258
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            75,
+            295,
+            212,
+            262
+          ],
+          "anchor": [
+            168,
+            262
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            433,
+            295,
+            234,
+            262
+          ],
+          "anchor": [
+            170,
+            262
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            803,
+            298,
+            202,
+            259
+          ],
+          "anchor": [
+            160,
+            259
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            1161,
+            289,
+            190,
+            263
+          ],
+          "anchor": [
+            149,
+            263
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            61,
+            604,
+            241,
+            214
+          ],
+          "anchor": [
+            180,
+            214
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            420,
+            564,
+            240,
+            254
+          ],
+          "anchor": [
+            169,
+            254
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            801,
+            564,
+            237,
+            260
+          ],
+          "anchor": [
+            178,
+            260
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            1156,
+            564,
+            218,
+            255
+          ],
+          "anchor": [
+            163,
+            255
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            60,
+            837,
+            232,
+            235
+          ],
+          "anchor": [
+            175,
+            235
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            428,
+            829,
+            220,
+            243
+          ],
+          "anchor": [
+            164,
+            243
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            797,
+            824,
+            228,
+            248
+          ],
+          "anchor": [
+            155,
+            248
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_actions_raw.png",
+          "rect": [
+            1159,
+            821,
+            200,
+            255
+          ],
+          "anchor": [
+            161,
+            255
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            71,
+            17,
+            213,
+            262
+          ],
+          "anchor": [
+            173,
+            262
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            425,
+            17,
+            224,
+            262
+          ],
+          "anchor": [
+            181,
+            262
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            772,
+            17,
+            248,
+            262
+          ],
+          "anchor": [
+            194,
+            262
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            1138,
+            17,
+            254,
+            262
+          ],
+          "anchor": [
+            190,
+            262
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            47,
+            293,
+            259,
+            260
+          ],
+          "anchor": [
+            178,
+            260
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            409,
+            293,
+            247,
+            260
+          ],
+          "anchor": [
+            187,
+            260
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            770,
+            293,
+            222,
+            260
+          ],
+          "anchor": [
+            191,
+            260
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            1139,
+            293,
+            215,
+            260
+          ],
+          "anchor": [
+            180,
+            260
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            59,
+            576,
+            228,
+            249
+          ],
+          "anchor": [
+            174,
+            249
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            421,
+            601,
+            243,
+            224
+          ],
+          "anchor": [
+            174,
+            224
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            785,
+            582,
+            243,
+            243
+          ],
+          "anchor": [
+            174,
+            243
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            1141,
+            571,
+            218,
+            254
+          ],
+          "anchor": [
+            181,
+            254
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            49,
+            834,
+            235,
+            238
+          ],
+          "anchor": [
+            181,
+            238
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            421,
+            858,
+            243,
+            214
+          ],
+          "anchor": [
+            172,
+            214
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            784,
+            861,
+            243,
+            211
+          ],
+          "anchor": [
+            174,
+            211
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/moonli_combat_raw.png",
+          "rect": [
+            1157,
+            897,
+            241,
+            175
+          ],
+          "anchor": [
+            165,
+            175
+          ]
+        }
+      ],
+      "animations": {
+        "walk": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 12,
+          "loop": true
+        },
+        "run": {
+          "frames": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 16,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            16,
+            17,
+            18,
+            19,
+            18,
+            17
+          ],
+          "fps": 5,
+          "loop": true
+        },
+        "start": {
+          "frames": [
+            20,
+            21
+          ],
+          "fps": 16,
+          "loop": false
+        },
+        "stop": {
+          "frames": [
+            22,
+            23
+          ],
+          "fps": 14,
+          "loop": false
+        },
+        "jump": {
+          "frames": [
+            24,
+            25
+          ],
+          "fps": 14,
+          "loop": false
+        },
+        "fall": {
+          "frames": [
+            26,
+            27
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "land": {
+          "frames": [
+            28,
+            29
+          ],
+          "fps": 16,
+          "loop": false
+        },
+        "turn": {
+          "frames": [
+            30,
+            31
+          ],
+          "fps": 18,
+          "loop": false
+        },
+        "cast": {
+          "frames": [
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39
+          ],
+          "fps": 16,
+          "loop": false
+        },
+        "attack": {
+          "frames": [
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39
+          ],
+          "fps": 16,
+          "loop": false
+        },
+        "hurt": {
+          "frames": [
+            40,
+            41,
+            42,
+            43
+          ],
+          "fps": 12,
+          "loop": false
+        },
+        "defeat": {
+          "frames": [
+            44,
+            45,
+            46,
+            47
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "recover": {
+          "frames": [
+            38,
+            39
+          ],
+          "fps": 12,
+          "loop": false
+        }
+      }
+    },
+    "guard": {
+      "source_frames": [
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            85,
+            13,
+            224,
+            214
+          ],
+          "anchor": [
+            135.0,
+            214
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            440,
+            13,
+            208,
+            214
+          ],
+          "anchor": [
+            134.0,
+            214
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            790,
+            19,
+            216,
+            208
+          ],
+          "anchor": [
+            128.0,
+            208
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            1140,
+            19,
+            215,
+            210
+          ],
+          "anchor": [
+            138.0,
+            210
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            91,
+            245,
+            209,
+            215
+          ],
+          "anchor": [
+            129.0,
+            215
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            439,
+            245,
+            209,
+            215
+          ],
+          "anchor": [
+            135.0,
+            215
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            788,
+            245,
+            212,
+            215
+          ],
+          "anchor": [
+            129.0,
+            215
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            1140,
+            245,
+            210,
+            215
+          ],
+          "anchor": [
+            103.0,
+            215
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            104,
+            483,
+            188,
+            208
+          ],
+          "anchor": [
+            91.0,
+            208
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            454,
+            483,
+            185,
+            208
+          ],
+          "anchor": [
+            92.5,
+            208
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            792,
+            479,
+            217,
+            212
+          ],
+          "anchor": [
+            113.0,
+            212
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            1134,
+            476,
+            198,
+            215
+          ],
+          "anchor": [
+            135.0,
+            215
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            46,
+            726,
+            348,
+            172
+          ],
+          "anchor": [
+            161.0,
+            172
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            429,
+            724,
+            291,
+            174
+          ],
+          "anchor": [
+            114.0,
+            174
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            791,
+            722,
+            237,
+            176
+          ],
+          "anchor": [
+            108.0,
+            176
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            1161,
+            703,
+            192,
+            198
+          ],
+          "anchor": [
+            88.0,
+            198
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            91,
+            902,
+            219,
+            201
+          ],
+          "anchor": [
+            148.0,
+            201
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            432,
+            908,
+            228,
+            195
+          ],
+          "anchor": [
+            127.0,
+            195
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            767,
+            925,
+            245,
+            178
+          ],
+          "anchor": [
+            88.0,
+            178
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/guard_raw.png",
+          "rect": [
+            1094,
+            956,
+            287,
+            151
+          ],
+          "anchor": [
+            111.0,
+            151
+          ]
+        }
+      ],
+      "source_scale": 0.1304348,
+      "frame_anchor": [
+        22,
+        64
+      ],
+      "scale": 4,
+      "mechanical": false,
+      "animations": {
+        "walk": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 10,
+          "loop": true
+        },
+        "run": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 14,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            8,
+            9
+          ],
+          "fps": 3,
+          "loop": true
+        },
+        "windup": {
+          "frames": [
+            10,
+            11
+          ],
+          "fps": 7,
+          "loop": false
+        },
+        "attack": {
+          "frames": [
+            12,
+            13
+          ],
+          "fps": 9,
+          "loop": false
+        },
+        "cast": {
+          "frames": [
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "recover": {
+          "frames": [
+            14,
+            15
+          ],
+          "fps": 7,
+          "loop": false
+        },
+        "hurt": {
+          "frames": [
+            16,
+            17
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "defeat": {
+          "frames": [
+            18,
+            19
+          ],
+          "fps": 5,
+          "loop": false
+        }
+      }
+    },
+    "elite": {
+      "source_frames": [
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            41,
+            13,
+            314,
+            220
+          ],
+          "anchor": [
+            157.0,
+            220
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            398,
+            13,
+            294,
+            220
+          ],
+          "anchor": [
+            133.0,
+            220
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            749,
+            13,
+            291,
+            220
+          ],
+          "anchor": [
+            97.0,
+            220
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            1101,
+            14,
+            288,
+            219
+          ],
+          "anchor": [
+            128.0,
+            219
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            47,
+            243,
+            314,
+            220
+          ],
+          "anchor": [
+            156.0,
+            220
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            387,
+            247,
+            319,
+            216
+          ],
+          "anchor": [
+            150.0,
+            216
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            742,
+            246,
+            314,
+            217
+          ],
+          "anchor": [
+            150.0,
+            217
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            1104,
+            246,
+            298,
+            218
+          ],
+          "anchor": [
+            96.0,
+            218
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            43,
+            474,
+            293,
+            215
+          ],
+          "anchor": [
+            144.0,
+            215
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            402,
+            473,
+            307,
+            216
+          ],
+          "anchor": [
+            146.0,
+            216
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            739,
+            477,
+            269,
+            213
+          ],
+          "anchor": [
+            197.0,
+            213
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            1096,
+            472,
+            290,
+            218
+          ],
+          "anchor": [
+            203.0,
+            218
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            15,
+            697,
+            355,
+            191
+          ],
+          "anchor": [
+            156.0,
+            191
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            357,
+            705,
+            396,
+            184
+          ],
+          "anchor": [
+            173.0,
+            184
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            745,
+            706,
+            333,
+            184
+          ],
+          "anchor": [
+            159.0,
+            184
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            1094,
+            706,
+            288,
+            189
+          ],
+          "anchor": [
+            130.0,
+            189
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            72,
+            897,
+            269,
+            198
+          ],
+          "anchor": [
+            148.0,
+            198
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            399,
+            898,
+            293,
+            197
+          ],
+          "anchor": [
+            134.0,
+            197
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            728,
+            939,
+            330,
+            157
+          ],
+          "anchor": [
+            138.0,
+            157
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/elite_raw.png",
+          "rect": [
+            1076,
+            947,
+            318,
+            148
+          ],
+          "anchor": [
+            140.0,
+            148
+          ]
+        }
+      ],
+      "source_scale": 0.1076233,
+      "frame_anchor": [
+        23,
+        64
+      ],
+      "scale": 6,
+      "mechanical": false,
+      "animations": {
+        "walk": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 10,
+          "loop": true
+        },
+        "run": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 14,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            8,
+            9
+          ],
+          "fps": 3,
+          "loop": true
+        },
+        "windup": {
+          "frames": [
+            10,
+            11
+          ],
+          "fps": 7,
+          "loop": false
+        },
+        "attack": {
+          "frames": [
+            12,
+            13
+          ],
+          "fps": 9,
+          "loop": false
+        },
+        "cast": {
+          "frames": [
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "recover": {
+          "frames": [
+            14,
+            15
+          ],
+          "fps": 7,
+          "loop": false
+        },
+        "hurt": {
+          "frames": [
+            16,
+            17
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "defeat": {
+          "frames": [
+            18,
+            19
+          ],
+          "fps": 5,
+          "loop": false
+        }
+      }
+    },
+    "boss": {
+      "source_frames": [
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            63,
+            6,
+            216,
+            226
+          ],
+          "anchor": [
+            128.0,
+            226
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            429,
+            6,
+            209,
+            226
+          ],
+          "anchor": [
+            97.0,
+            226
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            772,
+            6,
+            203,
+            226
+          ],
+          "anchor": [
+            110.0,
+            226
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            1117,
+            6,
+            198,
+            226
+          ],
+          "anchor": [
+            120.0,
+            226
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            61,
+            243,
+            197,
+            226
+          ],
+          "anchor": [
+            155.0,
+            226
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            418,
+            243,
+            219,
+            226
+          ],
+          "anchor": [
+            129.5,
+            226
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            769,
+            243,
+            207,
+            226
+          ],
+          "anchor": [
+            134.0,
+            226
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            1112,
+            242,
+            219,
+            227
+          ],
+          "anchor": [
+            130.0,
+            227
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            70,
+            479,
+            189,
+            223
+          ],
+          "anchor": [
+            78.0,
+            223
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            418,
+            479,
+            215,
+            222
+          ],
+          "anchor": [
+            116.0,
+            222
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            765,
+            479,
+            243,
+            222
+          ],
+          "anchor": [
+            98.0,
+            222
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            1099,
+            480,
+            262,
+            221
+          ],
+          "anchor": [
+            107.0,
+            221
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            50,
+            713,
+            283,
+            217
+          ],
+          "anchor": [
+            126.0,
+            217
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            410,
+            711,
+            299,
+            218
+          ],
+          "anchor": [
+            153.0,
+            218
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            757,
+            714,
+            249,
+            218
+          ],
+          "anchor": [
+            119.5,
+            218
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            1106,
+            714,
+            227,
+            218
+          ],
+          "anchor": [
+            107.0,
+            218
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            53,
+            938,
+            218,
+            193
+          ],
+          "anchor": [
+            152.0,
+            193
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            426,
+            938,
+            193,
+            194
+          ],
+          "anchor": [
+            96.0,
+            194
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            752,
+            950,
+            224,
+            181
+          ],
+          "anchor": [
+            116.0,
+            181
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/boss_raw.png",
+          "rect": [
+            1086,
+            950,
+            251,
+            180
+          ],
+          "anchor": [
+            138.0,
+            180
+          ]
+        }
+      ],
+      "source_scale": 0.1464968,
+      "frame_anchor": [
+        24,
+        64
+      ],
+      "scale": 5,
+      "mechanical": false,
+      "animations": {
+        "walk": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 10,
+          "loop": true
+        },
+        "run": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 14,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            8,
+            9
+          ],
+          "fps": 3,
+          "loop": true
+        },
+        "windup": {
+          "frames": [
+            10,
+            11
+          ],
+          "fps": 7,
+          "loop": false
+        },
+        "attack": {
+          "frames": [
+            12,
+            13
+          ],
+          "fps": 9,
+          "loop": false
+        },
+        "cast": {
+          "frames": [
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "recover": {
+          "frames": [
+            14,
+            15
+          ],
+          "fps": 7,
+          "loop": false
+        },
+        "hurt": {
+          "frames": [
+            16,
+            17
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "defeat": {
+          "frames": [
+            18,
+            19
+          ],
+          "fps": 5,
+          "loop": false
+        }
+      }
+    },
+    "instrument": {
+      "source_frames": [
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            131,
+            8,
+            237,
+            205
+          ],
+          "anchor": [
+            118.5,
+            213
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            447,
+            8,
+            234,
+            203
+          ],
+          "anchor": [
+            117.0,
+            211
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            758,
+            8,
+            243,
+            210
+          ],
+          "anchor": [
+            121.5,
+            218
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            1082,
+            8,
+            239,
+            204
+          ],
+          "anchor": [
+            119.5,
+            212
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            124,
+            225,
+            251,
+            207
+          ],
+          "anchor": [
+            125.5,
+            215
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            441,
+            225,
+            242,
+            207
+          ],
+          "anchor": [
+            121.0,
+            215
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            758,
+            225,
+            244,
+            207
+          ],
+          "anchor": [
+            122.0,
+            215
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            1079,
+            225,
+            241,
+            207
+          ],
+          "anchor": [
+            120.5,
+            215
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            121,
+            440,
+            252,
+            209
+          ],
+          "anchor": [
+            126.0,
+            217
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            440,
+            440,
+            243,
+            209
+          ],
+          "anchor": [
+            121.5,
+            217
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            753,
+            440,
+            252,
+            209
+          ],
+          "anchor": [
+            126.0,
+            217
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            1079,
+            440,
+            241,
+            209
+          ],
+          "anchor": [
+            120.5,
+            217
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            121,
+            657,
+            252,
+            208
+          ],
+          "anchor": [
+            126.0,
+            216
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            432,
+            657,
+            253,
+            209
+          ],
+          "anchor": [
+            126.5,
+            217
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            756,
+            657,
+            250,
+            209
+          ],
+          "anchor": [
+            125.0,
+            217
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            1078,
+            657,
+            243,
+            207
+          ],
+          "anchor": [
+            121.5,
+            215
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            121,
+            871,
+            244,
+            207
+          ],
+          "anchor": [
+            122.0,
+            215
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            440,
+            874,
+            249,
+            204
+          ],
+          "anchor": [
+            124.5,
+            212
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            762,
+            873,
+            240,
+            208
+          ],
+          "anchor": [
+            120.0,
+            216
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/instrument_raw.png",
+          "rect": [
+            1078,
+            874,
+            250,
+            206
+          ],
+          "anchor": [
+            125.0,
+            214
+          ]
+        }
+      ],
+      "source_scale": 0.1818182,
+      "frame_anchor": [
+        24,
+        64
+      ],
+      "scale": 3,
+      "mechanical": true,
+      "animations": {
+        "walk": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 10,
+          "loop": true
+        },
+        "run": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 14,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "windup": {
+          "frames": [
+            10,
+            11
+          ],
+          "fps": 7,
+          "loop": false
+        },
+        "attack": {
+          "frames": [
+            12,
+            13
+          ],
+          "fps": 9,
+          "loop": false
+        },
+        "cast": {
+          "frames": [
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "recover": {
+          "frames": [
+            14,
+            15
+          ],
+          "fps": 7,
+          "loop": false
+        },
+        "hurt": {
+          "frames": [
+            16,
+            17
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "defeat": {
+          "frames": [
+            18,
+            19
+          ],
+          "fps": 5,
+          "loop": false
+        },
+        "hover": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "rest": {
+          "frames": [
+            8,
+            9
+          ],
+          "fps": 3,
+          "loop": true
+        }
+      }
+    },
+    "observer": {
+      "source_frames": [
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            78,
+            6,
+            215,
+            224
+          ],
+          "anchor": [
+            173.0,
+            224
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            422,
+            6,
+            202,
+            225
+          ],
+          "anchor": [
+            163.0,
+            225
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            768,
+            6,
+            215,
+            225
+          ],
+          "anchor": [
+            168.0,
+            225
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            1108,
+            7,
+            215,
+            224
+          ],
+          "anchor": [
+            101.0,
+            224
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            76,
+            239,
+            223,
+            224
+          ],
+          "anchor": [
+            90.0,
+            224
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            426,
+            237,
+            216,
+            228
+          ],
+          "anchor": [
+            171.0,
+            228
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            774,
+            241,
+            226,
+            224
+          ],
+          "anchor": [
+            107.0,
+            224
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            1122,
+            238,
+            208,
+            227
+          ],
+          "anchor": [
+            174.0,
+            227
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            66,
+            473,
+            193,
+            215
+          ],
+          "anchor": [
+            106.0,
+            215
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            418,
+            478,
+            217,
+            211
+          ],
+          "anchor": [
+            112.0,
+            211
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            761,
+            473,
+            218,
+            218
+          ],
+          "anchor": [
+            113.5,
+            218
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            1088,
+            475,
+            273,
+            216
+          ],
+          "anchor": [
+            156.5,
+            216
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            25,
+            703,
+            350,
+            207
+          ],
+          "anchor": [
+            104.0,
+            207
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            383,
+            695,
+            326,
+            215
+          ],
+          "anchor": [
+            109.0,
+            215
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            758,
+            703,
+            256,
+            207
+          ],
+          "anchor": [
+            108.0,
+            207
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            1103,
+            701,
+            201,
+            209
+          ],
+          "anchor": [
+            103.0,
+            209
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            41,
+            914,
+            227,
+            203
+          ],
+          "anchor": [
+            97.5,
+            203
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            411,
+            914,
+            194,
+            196
+          ],
+          "anchor": [
+            124.0,
+            196
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            748,
+            930,
+            242,
+            184
+          ],
+          "anchor": [
+            130.0,
+            184
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/observer_raw.png",
+          "rect": [
+            1069,
+            936,
+            291,
+            174
+          ],
+          "anchor": [
+            145.0,
+            174
+          ]
+        }
+      ],
+      "source_scale": 0.1091954,
+      "frame_anchor": [
+        20,
+        64
+      ],
+      "scale": 5,
+      "mechanical": false,
+      "animations": {
+        "walk": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 10,
+          "loop": true
+        },
+        "run": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 14,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            8,
+            9
+          ],
+          "fps": 3,
+          "loop": true
+        },
+        "windup": {
+          "frames": [
+            10,
+            11
+          ],
+          "fps": 7,
+          "loop": false
+        },
+        "attack": {
+          "frames": [
+            12,
+            13
+          ],
+          "fps": 9,
+          "loop": false
+        },
+        "cast": {
+          "frames": [
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "recover": {
+          "frames": [
+            14,
+            15
+          ],
+          "fps": 7,
+          "loop": false
+        },
+        "hurt": {
+          "frames": [
+            16,
+            17
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "defeat": {
+          "frames": [
+            18,
+            19
+          ],
+          "fps": 5,
+          "loop": false
+        }
+      }
+    },
+    "anchor": {
+      "source_frames": [
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            73,
+            6,
+            223,
+            210
+          ],
+          "anchor": [
+            111.5,
+            218
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            424,
+            6,
+            223,
+            210
+          ],
+          "anchor": [
+            111.5,
+            218
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            773,
+            6,
+            230,
+            210
+          ],
+          "anchor": [
+            115.0,
+            218
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            1124,
+            6,
+            225,
+            210
+          ],
+          "anchor": [
+            112.5,
+            218
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            73,
+            221,
+            222,
+            219
+          ],
+          "anchor": [
+            111.0,
+            227
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            424,
+            221,
+            223,
+            219
+          ],
+          "anchor": [
+            111.5,
+            227
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            773,
+            221,
+            226,
+            219
+          ],
+          "anchor": [
+            113.0,
+            227
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            1124,
+            221,
+            225,
+            219
+          ],
+          "anchor": [
+            112.5,
+            227
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            68,
+            444,
+            229,
+            217
+          ],
+          "anchor": [
+            114.5,
+            225
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            418,
+            444,
+            229,
+            217
+          ],
+          "anchor": [
+            114.5,
+            225
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            769,
+            444,
+            228,
+            217
+          ],
+          "anchor": [
+            114.0,
+            225
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            1123,
+            444,
+            227,
+            217
+          ],
+          "anchor": [
+            113.5,
+            225
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            64,
+            666,
+            238,
+            217
+          ],
+          "anchor": [
+            119.0,
+            225
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            424,
+            666,
+            226,
+            217
+          ],
+          "anchor": [
+            113.0,
+            225
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            771,
+            666,
+            227,
+            217
+          ],
+          "anchor": [
+            113.5,
+            225
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            1124,
+            666,
+            226,
+            217
+          ],
+          "anchor": [
+            113.0,
+            225
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            71,
+            883,
+            233,
+            232
+          ],
+          "anchor": [
+            116.5,
+            240
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            420,
+            884,
+            235,
+            231
+          ],
+          "anchor": [
+            117.5,
+            239
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            771,
+            883,
+            235,
+            232
+          ],
+          "anchor": [
+            117.5,
+            240
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/anchor_raw.png",
+          "rect": [
+            1122,
+            883,
+            229,
+            232
+          ],
+          "anchor": [
+            114.5,
+            240
+          ]
+        }
+      ],
+      "source_scale": 0.1932773,
+      "frame_anchor": [
+        24,
+        64
+      ],
+      "scale": 2,
+      "mechanical": true,
+      "animations": {
+        "walk": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 10,
+          "loop": true
+        },
+        "run": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 14,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "windup": {
+          "frames": [
+            10,
+            11
+          ],
+          "fps": 7,
+          "loop": false
+        },
+        "attack": {
+          "frames": [
+            12,
+            13
+          ],
+          "fps": 9,
+          "loop": false
+        },
+        "cast": {
+          "frames": [
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "recover": {
+          "frames": [
+            14,
+            15
+          ],
+          "fps": 7,
+          "loop": false
+        },
+        "hurt": {
+          "frames": [
+            16,
+            17
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "defeat": {
+          "frames": [
+            18,
+            19
+          ],
+          "fps": 5,
+          "loop": false
+        },
+        "hover": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 8,
+          "loop": true
+        },
+        "rest": {
+          "frames": [
+            8,
+            9
+          ],
+          "fps": 3,
+          "loop": true
+        }
+      }
+    },
+    "musheng": {
+      "source_frames": [
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            69,
+            5,
+            199,
+            231
+          ],
+          "anchor": [
+            109.5,
+            231
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            428,
+            5,
+            185,
+            231
+          ],
+          "anchor": [
+            97.0,
+            231
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            768,
+            5,
+            199,
+            231
+          ],
+          "anchor": [
+            153.5,
+            231
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            1126,
+            7,
+            191,
+            229
+          ],
+          "anchor": [
+            90.0,
+            229
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            69,
+            241,
+            197,
+            232
+          ],
+          "anchor": [
+            105.0,
+            232
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            424,
+            241,
+            196,
+            232
+          ],
+          "anchor": [
+            105.0,
+            232
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            783,
+            241,
+            179,
+            232
+          ],
+          "anchor": [
+            91.0,
+            232
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            1129,
+            241,
+            191,
+            232
+          ],
+          "anchor": [
+            102.0,
+            232
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            97,
+            476,
+            156,
+            216
+          ],
+          "anchor": [
+            87.0,
+            216
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            447,
+            476,
+            156,
+            216
+          ],
+          "anchor": [
+            85.0,
+            216
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            797,
+            476,
+            138,
+            217
+          ],
+          "anchor": [
+            84.0,
+            217
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            1141,
+            476,
+            182,
+            217
+          ],
+          "anchor": [
+            88.0,
+            217
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            83,
+            697,
+            185,
+            217
+          ],
+          "anchor": [
+            83.0,
+            217
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            436,
+            697,
+            171,
+            216
+          ],
+          "anchor": [
+            92.0,
+            216
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            796,
+            696,
+            158,
+            216
+          ],
+          "anchor": [
+            81.0,
+            216
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            1153,
+            697,
+            150,
+            215
+          ],
+          "anchor": [
+            77.0,
+            215
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            90,
+            919,
+            182,
+            193
+          ],
+          "anchor": [
+            97.0,
+            193
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            433,
+            916,
+            169,
+            196
+          ],
+          "anchor": [
+            92.0,
+            196
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            762,
+            931,
+            224,
+            174
+          ],
+          "anchor": [
+            113.0,
+            174
+          ]
+        },
+        {
+          "sheet": "res://assets/pixel_v1/musheng_raw.png",
+          "rect": [
+            1113,
+            938,
+            217,
+            168
+          ],
+          "anchor": [
+            105.0,
+            168
+          ]
+        }
+      ],
+      "source_scale": 0.1696429,
+      "frame_anchor": [
+        28,
+        64
+      ],
+      "scale": 3,
+      "mechanical": false,
+      "animations": {
+        "walk": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 10,
+          "loop": true
+        },
+        "run": {
+          "frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "fps": 14,
+          "loop": true
+        },
+        "idle": {
+          "frames": [
+            8,
+            9
+          ],
+          "fps": 3,
+          "loop": true
+        },
+        "windup": {
+          "frames": [
+            10,
+            11
+          ],
+          "fps": 7,
+          "loop": false
+        },
+        "attack": {
+          "frames": [
+            12,
+            13
+          ],
+          "fps": 9,
+          "loop": false
+        },
+        "cast": {
+          "frames": [
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "recover": {
+          "frames": [
+            14,
+            15
+          ],
+          "fps": 7,
+          "loop": false
+        },
+        "hurt": {
+          "frames": [
+            16,
+            17
+          ],
+          "fps": 8,
+          "loop": false
+        },
+        "defeat": {
+          "frames": [
+            18,
+            19
+          ],
+          "fps": 5,
+          "loop": false
+        },
+        "talk": {
+          "frames": [
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "fps": 6,
+          "loop": true
+        }
+      }
+    }
+  },
+  "approved_motion": "48x64 coherent authored pixel frames; user approved size and gait"
+}

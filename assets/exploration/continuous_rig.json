@@ -1,0 +1,64 @@
+{
+  "texture": "res://assets/exploration/neutral_idle_ready.png",
+  "rect": [
+    0,
+    0,
+    1024,
+    1536
+  ],
+  "anchor": [
+    667,
+    1457
+  ],
+  "scale": 0.1501,
+  "joints": {
+    "head": [
+      682,
+      156
+    ],
+    "shoulder": [
+      651,
+      310
+    ],
+    "hip": [
+      676,
+      748
+    ],
+    "left_knee": [
+      617,
+      1040
+    ],
+    "right_knee": [
+      675,
+      1030
+    ],
+    "left_foot": [
+      630,
+      1456
+    ],
+    "right_foot": [
+      706,
+      1445
+    ],
+    "left_hand": [
+      833,
+      698
+    ],
+    "right_hand": [
+      507,
+      696
+    ],
+    "right_shoulder": [
+      562,
+      319
+    ],
+    "right_elbow": [
+      538,
+      490
+    ],
+    "right_wrist": [
+      511,
+      643
+    ]
+  }
+}

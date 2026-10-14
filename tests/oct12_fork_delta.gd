@@ -1,0 +1,42 @@
+extends SceneTree
+const Navigator = preload("res://scripts/exploration/fork_navigation.gd")
+const Map = preload("res://scripts/exploration/chapter_map.gd")
+var failures: Array[String] = []
+var checks := 0
+func check(value: bool, label: String) -> void:
+	checks += 1
+	if not value: failures.append(label)
+func _initialize() -> void:
+	var nav = Navigator.new()
+	check(not nav.proximity(Vector2(200,1900),true).visible,"no far hint")
+	check(not nav.proximity(Vector2(2000,1900),false).visible,"no airborne hint")
+	var hint: Dictionary = nav.proximity(Vector2(2000,1900),true)
+	check(hint.get("id","")=="tutorial_upper","tutorial entry")
+	check(nav.begin(hint,-1,Vector2(2000,1900)),"up accepted")
+	check(nav.active.target_x>2000 and nav.selected.has("tutorial_upper"),"up follows connector")
+	check(not nav.proximity(Vector2(2000,1900),true).visible,"active trip hides hint")
+	var saved: Dictionary = nav.capture()
+	nav.cancel()
+	nav.restore(saved)
+	check(nav.active==saved.active,"temporal route restore")
+	nav.cancel()
+	hint = nav.proximity(Vector2(2130,nav.surface_y(Map.fork_paths()[0].points,2130)),true)
+	check(hint.get("on_ramp",false),"upper connector offers backtrack")
+	check(nav.begin(hint,1,Vector2(2130,1785)),"down accepted")
+	check(nav.active.target_x==2000 and nav.active.axis<0,"down follows reverse connector")
+	nav.cancel()
+	hint = nav.proximity(Vector2(2700,1900),true)
+	check(nav.begin(hint,-1,Vector2(2700,1900)) and nav.active.axis<0,"exit allows reverse revisit")
+	nav.cancel()
+	nav.selected.clear()
+	hint = nav.proximity(Vector2(9000,1900),true)
+	check(hint.get("id","")=="lamp_middle","lamp starts with middle")
+	check(nav.begin(hint,-1,Vector2(9000,1900)),"lamp middle selectable")
+	nav.cancel()
+	hint = nav.proximity(Vector2(9400,1848.8),true)
+	check(hint.get("id","")=="lamp_upper","lamp upper contextual connector")
+	check(nav.begin(hint,-1,Vector2(9400,1848.8)),"lamp upper selectable")
+	for path in Map.fork_paths():
+		check(path.points.size()>=3,"visible physical path "+str(path.id))
+	print("OCT12_FORK_DELTA: ",checks," checks; failures=",failures)
+	quit(0 if failures.is_empty() else 1)

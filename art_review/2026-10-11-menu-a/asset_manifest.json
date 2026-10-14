@@ -1,0 +1,47 @@
+{
+  "method": "built-in image_gen; referenced edits",
+  "assets": [
+    {
+      "role": "background",
+      "asset": "assets\\menu\\menu_a_reference_background.png",
+      "generated_file": "exec-52942246-e2b1-498a-a2ba-b0c735e48f11.png",
+      "size": [
+        1586,
+        992
+      ],
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "sha256": "464d45451759ebeafe9f4982cc17aec4e4df827c673cd8e3bd3d958bb3f94a9a"
+    },
+    {
+      "role": "portrait",
+      "asset": "assets\\menu\\menu_a_reference_portrait.png",
+      "generated_file": "exec-12b11121-0e4a-4269-90ee-932994cee8f1.png",
+      "size": [
+        1448,
+        1086
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "sha256": "554824331e0a1600be1164db9afaed148a64f27cb20a82565927b94be597f5d6"
+    },
+    {
+      "role": "title",
+      "asset": "assets\\menu\\menu_a_reference_title.png",
+      "generated_file": "exec-baa9d5ed-1ea9-46f6-b177-46dde00cb50d.png",
+      "size": [
+        2094,
+        751
+      ],
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "sha256": "343957ee24f121d7900390b696c7ba12dbefc5b5bd58973061775316b3f293f7"
+    }
+  ]
+}
