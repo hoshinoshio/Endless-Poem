@@ -1,4 +1,0 @@
-SCRIPT ERROR: Parse Error: Preload file "res://scripts/combat/combat_model.gd" does not exist.
-   at: GDScript::reload (res://scripts/ui/main.gd:3)
-ERROR: Failed to load script "res://scripts/ui/main.gd" with error "Parse error".
-   at: load (modules/gdscript/gdscript_resource_format.cpp:46)

@@ -1,23 +1,15 @@
 extends Node
-## Persistent chapter coordinator; world owns positions, model owns combat effects.
+## Persistent chapter coordinator for the time-authority flow; world owns positions.
 signal return_to_menu
 const World = preload("res://scripts/exploration/exploration_world.gd")
-const Spatial = preload("res://scripts/exploration/spatial_combat.gd")
-const Combat = preload("res://scripts/combat/combat_model.gd")
 const Opening = preload("res://scripts/onboarding/opening_sequence.gd")
 const AuthorityTutorial = preload("res://scripts/onboarding/authority_tutorial.gd")
 const TimeCard = preload("res://scripts/authority/time_card.gd")
 const Temporal = preload("res://scripts/authority/temporal_controller.gd")
-const Tutorial = preload("res://scripts/onboarding/exploration_tutorial.gd")
-const Card = preload("res://scripts/ui/battle_card.gd")
-const Clock = preload("res://scripts/ui/clock_icon.gd")
 const FONT = preload("res://assets/msyh.ttc")
 const ForkGuidance = preload("res://scripts/exploration/fork_guidance.gd")
-const TYPES = ["fire","shield","charge","ember","ignite","ember_shield","heavy_shield","echo","delay"]
 var store
 var world
-var spatial
-var combat = Combat.new()
 var hud: CanvasLayer
 var canvas: Control
 var battle_hud: Control
@@ -28,9 +20,7 @@ var mode = "opening"
 var suspended = false
 var run: Dictionary = {}
 var checkpoint: Dictionary = {}
-var encounter = ""
 var card_buttons: Dictionary = {}
-var target_bars: Dictionary = {}
 var deck_scroll: ScrollContainer
 var authority_button: Button
 var hp_bar: ProgressBar
@@ -39,9 +29,6 @@ var _jump = false
 var _autosave = 0.0
 var _ui_elapsed = 0.0
 var _pause_return = "explore"
-var _restore_mode = "explore"
-var _loadout_only = false
-var _loadout_scroll = 0
 var ui_buttons: Dictionary = {}
 var last_error = ""
 var save_notice: Label
@@ -50,9 +37,6 @@ var _authority_resolved_hits: Dictionary = {}
 var fork_guidance: Control
 var _fork_narration_started := false
 var _fork_guidance_seen := false
-
-func _authority_mode() -> bool:
-	return store != null and str(store.data.get("active_ruleset", "")) == "time_authority_v2"
 
 func configure(collection_store, new_exploration: bool) -> void:
 	store = collection_store
@@ -78,26 +62,17 @@ func configure(collection_store, new_exploration: bool) -> void:
 		checkpoint = store.data.get("exploration_checkpoint", run).duplicate(true)
 		if run.is_empty(): _new_run()
 		else:
-			if run.get("in_battle", false):
-				run = checkpoint.duplicate(true)
-				run.in_battle = false
 			run.lamp_lit = run.get("lamp_lit",store.data.get("lamp_lit",false))
 			_build_world()
-			if not _authority_mode() and not str(run.get("pending_reward", "")).is_empty(): _show_reward()
-			elif not _authority_mode() and run.get("pending_upgrade", false): _show_upgrade("elite",0)
-			elif run.get("pending_ending", "") == "record": _show_records()
+			if run.get("pending_ending", "") == "record": _show_records()
 
 func _accept_opening() -> void:
 	_new_run()
 
 func _new_run() -> void:
-	var step = 4 if store.data.get("tutorial_completed", false) else 0
-	var candidate = {"active":true,"position":[200,1900],"region":0,"hp":50,"coins":0,"upgrades":{},"completed":[],"interactions":[],"tutorial_step":step,"pending_reward":"","pending_upgrade":false,"in_battle":false,"rest_used":false,"elite_upgrade_used":false}
+	var unlocked = bool(store.data.get("authority_granted",false))
+	var candidate = {"active":true,"position":[200,1900],"region":0,"hp":50,"completed":[],"interactions":[],"ruleset":store.TIME_RULESET,"authority_unlocked":unlocked,"authority_tutorial_step":3 if unlocked else 0}
 	var metadata = {"intro_accepted":true,"visits":int(store.data.get("visits",0))+1}
-	if _authority_mode():
-		candidate.ruleset = "time_authority_v2"
-		candidate.authority_unlocked = bool(store.data.get("authority_granted",false))
-		candidate.authority_tutorial_step = 3 if candidate.authority_unlocked else 0
 	candidate.lamp_lit = store.data.get("lamp_lit",false)
 	if not _commit(candidate,metadata):
 		if is_instance_valid(boot_error): boot_error.queue_free()
@@ -115,21 +90,15 @@ func _build_world() -> void:
 	world = World.new()
 	add_child(world)
 	world.configure(run)
-	world.encounter_requested.connect(request_encounter)
 	world.interaction_requested.connect(_interact)
 	world.enemy_attack_hit.connect(_authority_enemy_hit)
 	world.branch_chosen.connect(_branch_chosen)
 	world.tutorial_event.connect(_tutorial_event)
 	world.checkpoint_requested.connect(func(_p,_r):
 		if mode == "explore": _save_checkpoint())
-	if not _authority_mode():
-		spatial = Spatial.new()
-		add_child(spatial)
-		spatial.configure(combat,world)
-		spatial.target_clicked.connect(confirm_target)
-	tutorial = AuthorityTutorial.new() if _authority_mode() else Tutorial.new()
+	tutorial = AuthorityTutorial.new()
 	canvas.add_child(tutorial)
-	tutorial.configure(int(run.get("authority_tutorial_step" if _authority_mode() else "tutorial_step",0)))
+	tutorial.configure(int(run.get("authority_tutorial_step",0)))
 	tutorial.step_changed.connect(_tutorial_step)
 	mode = "explore"
 	_fork_guidance_seen = bool(store.data.get("fork_guidance_seen",false))
@@ -137,9 +106,9 @@ func _build_world() -> void:
 	canvas.add_child(fork_guidance)
 	_build_hud()
 
-func _commit(candidate: Dictionary, metadata: Dictionary = {}, source: String = "", kind: String = "", update_checkpoint = true) -> bool:
-	var safe = candidate.duplicate(true) if update_checkpoint else checkpoint.duplicate(true)
-	if not store.commit_exploration(candidate,safe,metadata,source,kind):
+func _commit(candidate: Dictionary, metadata: Dictionary = {}) -> bool:
+	var safe = candidate.duplicate(true)
+	if not store.commit_exploration(candidate,safe,metadata):
 		last_error = store.last_error
 		push_warning(last_error)
 		if not is_instance_valid(save_notice): save_notice = _label(last_error,Rect2(350,105,800,65),canvas,20)
@@ -159,13 +128,12 @@ func _position_into(candidate: Dictionary) -> void:
 	candidate.region = world.current_region
 
 func _save_checkpoint() -> bool:
-	if run.is_empty() or mode == "battle": return false
+	if run.is_empty(): return false
 	if world != null and world.proximity_fork().get("route_active",false): return false
 	# A hostile approach must not replace the last safe retry position with a hitbox.
-	if _authority_mode() and (int(run.get("hp",50)) <= 0 or world.has_hostile_attention()): return false
+	if int(run.get("hp",50)) <= 0 or world.has_hostile_attention(): return false
 	var candidate = run.duplicate(true)
 	_position_into(candidate)
-	candidate.in_battle = false
 	return _commit(candidate)
 
 func _tutorial_event(event: String, data: Dictionary) -> void:
@@ -174,31 +142,20 @@ func _tutorial_event(event: String, data: Dictionary) -> void:
 func _tutorial_step(step: int) -> void:
 	var candidate = run.duplicate(true)
 	_position_into(candidate)
-	var field = "authority_tutorial_step" if _authority_mode() else "tutorial_step"
-	candidate[field] = step
-	var metadata = {} if _authority_mode() else {"tutorial_completed":step == 4}
-	if not _commit(candidate,metadata): tutorial.configure(int(run.get(field,0)))
+	candidate.authority_tutorial_step = step
+	if not _commit(candidate): tutorial.configure(int(run.get("authority_tutorial_step",0)))
 
 func _physics_process(delta: float) -> void:
 	if suspended or world == null: return
-	if spatial != null: spatial.advance_feedback(minf(delta,0.1))
-	if mode in ["explore","battle"]:
+	if mode == "explore":
 		var axis = Input.get_axis("explore_left","explore_right")
 		world.set_movement_input(axis,_jump,Input.is_action_pressed("explore_run"))
 		_jump = false
-		if mode == "battle":
-			spatial.advance(minf(delta,0.1))
-			for event in combat.take_events():
-				spatial.present_event(event)
-				if event.type == "cast": world.play_player_action("cast")
-				elif event.type == "hit" and event.get("target","") == "player": world.play_player_action("hurt")
-			if combat.status in ["won","lost"]: _finish_battle()
-		else:
-			world.advance_simulation(minf(delta,0.1))
-			_autosave += delta
-			if _autosave >= 5.0 and world.player.grounded:
-				_autosave = 0
-				_save_checkpoint()
+		world.advance_simulation(minf(delta,0.1))
+		_autosave += delta
+		if _autosave >= 5.0 and world.player.grounded:
+			_autosave = 0
+			_save_checkpoint()
 	elif mode in ["ending","complete"]:
 		# The finale is a cinematic interaction, not a paused gameplay menu.
 		world.set_paused(false)
@@ -215,15 +172,13 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		var key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
 		if key == KEY_ESCAPE:
-			if _authority_mode() and mode == "explore" and not world.temporal.selected_card.is_empty():
+			if mode == "explore" and not world.temporal.selected_card.is_empty():
 				world.temporal.cancel_selection()
-			elif _authority_mode() and mode == "explore" and deck_open: toggle_deck()
-			elif mode == "battle" and not combat.selected_card_id.is_empty(): combat.cancel_selection()
-			elif mode == "battle" and deck_open: toggle_deck()
-			elif mode in ["pause", "dialog", "device", "device_complete", "inspection", "shop", "rest", "journal"]: _resume_dialog()
-			elif mode in ["explore","battle"]: show_pause()
+			elif mode == "explore" and deck_open: toggle_deck()
+			elif mode in ["pause", "dialog", "device", "device_complete", "inspection", "journal"]: _resume_dialog()
+			elif mode == "explore": show_pause()
 			get_viewport().set_input_as_handled()
-		elif key == KEY_SPACE and mode in ["explore","battle"]:
+		elif key == KEY_SPACE and mode == "explore":
 			_jump = true
 			get_viewport().set_input_as_handled()
 		elif key == KEY_E and mode == "explore":
@@ -232,17 +187,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif key in [KEY_W,KEY_S] and mode == "explore":
 			if world.choose_branch(-1 if key == KEY_W else 1):
 				get_viewport().set_input_as_handled()
-	if _authority_mode() and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and mode == "explore":
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and mode == "explore":
 		var target = world.temporal.target_at_point(event.position)
 		if not target.is_empty():
 			confirm_target(target)
 			get_viewport().set_input_as_handled()
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and mode == "battle":
-		for enemy in combat.enemies:
-			if spatial.get_target_rect(enemy.id).has_point(event.position):
-				confirm_target(enemy.id)
-				get_viewport().set_input_as_handled()
-				break
 
 func _update_fork_guidance(delta: float) -> void:
 	if not is_instance_valid(fork_guidance) or world == null: return
@@ -316,111 +265,24 @@ func _bar(rect: Rect2, parent: Control) -> ProgressBar:
 	b.size = rect.size
 	return b
 
-func _build_hud() -> void:
-	if _authority_mode():
-		_build_authority_hud()
-		return
-	if is_instance_valid(battle_hud):
-		canvas.remove_child(battle_hud)
-		battle_hud.queue_free()
-	battle_hud = Control.new()
-	battle_hud.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	battle_hud.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	canvas.add_child(battle_hud)
-	card_buttons.clear()
-	target_bars.clear()
-	hp_bar = _bar(Rect2(300,864,510,8),battle_hud)
-	hp_bar.max_value = 50
-	hp_bar.value = run.get("hp",50)
-	deck_scroll = ScrollContainer.new()
-	deck_scroll.position = Vector2(300,582)
-	deck_scroll.size = Vector2(1098,268)
-	deck_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	battle_hud.add_child(deck_scroll)
-	var grid = GridContainer.new()
-	grid.columns = 6
-	grid.add_theme_constant_override("h_separation",12)
-	grid.add_theme_constant_override("v_separation",10)
-	deck_scroll.add_child(grid)
-	if mode == "battle":
-		for card in combat.get_snapshot().cards:
-			var id = str(card.id)
-			var face = Card.new()
-			face.custom_minimum_size = Vector2(168,128)
-			grid.add_child(face)
-			face.configure(card)
-			face.pressed.connect(func(): choose_card(id))
-			card_buttons[id] = face
-	authority_button = _button("authority","",Rect2(182,655,96,96),toggle_deck,battle_hud)
-	var clock = Clock.new()
-	clock.position = Vector2(7,7)
-	clock.size = Vector2(82,82)
-	authority_button.add_child(clock)
-	deck_open = false
-	deck_scroll.visible = false
-	authority_button.visible = mode == "battle"
-	_update_hud()
-
 func _update_hud() -> void:
 	if not is_instance_valid(battle_hud): return
-	if _authority_mode():
-		if is_instance_valid(hp_bar): hp_bar.value = run.get("hp",50)
-		for id in card_buttons:
-			card_buttons[id].set_selected(world.temporal.selected_card == id)
-		return
-	hp_bar.value = combat.hp if mode == "battle" else run.get("hp",50)
-	if mode != "battle": return
-	var snapshot = combat.get_snapshot()
-	world.camera.force_update_scroll()
-	for card in snapshot.cards:
-		if card_buttons.has(card.id): card_buttons[card.id].configure(card)
-	var live = []
-	for enemy in snapshot.enemies:
-		live.append(enemy.id)
-		if not target_bars.has(enemy.id): target_bars[enemy.id] = _bar(Rect2(0,0,140,7),battle_hud)
-		var bar: ProgressBar = target_bars[enemy.id]
-		var rect: Rect2 = spatial.get_target_rect(enemy.id)
-		bar.position = Vector2(430,92) if enemy.kind == "boss" else rect.position+Vector2((rect.size.x-140)/2,-15)
-		bar.size = Vector2(580,11) if enemy.kind == "boss" else Vector2(140,7)
-		bar.max_value = enemy.max_hp
-		bar.value = enemy.hp
-		bar.visible = rect.intersects(Rect2(0,0,1440,575)) or enemy.kind == "boss"
-	for id in target_bars.keys():
-		if not id in live:
-			target_bars[id].queue_free()
-			target_bars.erase(id)
+	if is_instance_valid(hp_bar): hp_bar.value = run.get("hp",50)
+	for id in card_buttons:
+		card_buttons[id].set_selected(world.temporal.selected_card == id)
 
 func toggle_deck() -> void:
-	if _authority_mode():
-		if mode != "explore" or not run.get("authority_unlocked",false): return
-		deck_open = not deck_open
-		deck_scroll.visible = deck_open
-		if not deck_open: world.temporal.cancel_selection()
-		return
-	if mode != "battle": return
+	if mode != "explore" or not run.get("authority_unlocked",false): return
 	deck_open = not deck_open
 	deck_scroll.visible = deck_open
-	if not deck_open: combat.cancel_selection()
+	if not deck_open: world.temporal.cancel_selection()
 
 func choose_card(id: String) -> void:
-	if _authority_mode():
-		if mode == "explore": world.temporal.select_card(id); _update_hud()
-		return
-	if mode != "battle": return
-	if combat.selected_card_id == id:
-		for card in combat.cards:
-			if card.id == id and card.target == "self": combat.play_selected("")
-	else: combat.select_card(id)
-	_update_hud()
+	if mode == "explore": world.temporal.select_card(id); _update_hud()
 
 func confirm_target(id: String) -> void:
-	if _authority_mode():
-		if mode == "explore":
-			if world.temporal.select_target(id): world.play_player_action("cast")
-			_update_hud()
-		return
-	if mode == "battle":
-		combat.play_selected(id)
+	if mode == "explore":
+		if world.temporal.select_target(id): world.play_player_action("cast")
 		_update_hud()
 
 func _clear_dialog() -> void:
@@ -435,13 +297,12 @@ func _panel(title: String, body: String = "") -> Control:
 	if is_instance_valid(fork_guidance): fork_guidance.hide()
 	_jump = false
 	world.set_movement_input(0, false)
-	if _authority_mode(): world.temporal.cancel_selection()
+	world.temporal.cancel_selection()
 	deck_open = false
 	if is_instance_valid(deck_scroll): deck_scroll.visible = false
 	if is_instance_valid(battle_hud): battle_hud.visible = false
 	if is_instance_valid(tutorial): tutorial.visible = false
 	world.set_paused(true)
-	if spatial != null and spatial.active: spatial.set_paused(true)
 	# A modal freezes the world but retains its current camera composition.
 	world.camera.enabled = true
 	world.camera.force_update_scroll()
@@ -472,124 +333,20 @@ func _resume_dialog() -> void:
 	world.set_paused(false)
 	if is_instance_valid(tutorial): tutorial.visible = not bool(tutorial.presentation_state().get("complete", false))
 	if is_instance_valid(battle_hud): battle_hud.visible = true
-	if mode == "battle": spatial.set_paused(false)
-	else: _build_hud()
-
-func request_encounter(id: String) -> void:
-	if _authority_mode(): return
-	if mode != "explore" or id in run.completed: return
-	encounter = id
-	var candidate = run.duplicate(true)
-	_position_into(candidate)
-	# Store a safe approach point, outside the automatic encounter trigger.
-	var p: Vector2 = world.get_player_position()
-	var trigger: Vector2 = world.get_encounter_spec(id).trigger
-	candidate.position = [minf(p.x,trigger.x-175),p.y]
-	if not _commit(candidate): return
-	show_loadout(false)
-
-func show_loadout(collection_only = false) -> void:
-	if _authority_mode(): return
-	_loadout_only = collection_only
-	mode = "loadout"
-	var p = _panel("显现权柄" if collection_only else "战前装备", "点击收藏中的卡牌装入或卸下。本次已装备 %d 张。" % store.equipped_ids.size())
-	var scroll = ScrollContainer.new()
-	scroll.position = Vector2(215,315)
-	scroll.size = Vector2(1010,305)
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	p.add_child(scroll)
-	var grid = GridContainer.new()
-	grid.columns = 6
-	grid.add_theme_constant_override("h_separation",8)
-	grid.add_theme_constant_override("v_separation",8)
-	scroll.add_child(grid)
-	var catalog = combat.get_card_catalog()
-	for card in store.collection:
-		var id = str(card.id)
-		var face = Card.new()
-		face.custom_minimum_size = Vector2(156,132)
-		grid.add_child(face)
-		face.configure(catalog[card.type].merged({"id":id,"type":card.type}),true,store.equipped_ids.has(id))
-		face.pressed.connect(func():
-			var ids = store.equipped_ids
-			if id in ids: ids.erase(id)
-			else: ids.append(id)
-			_loadout_scroll = scroll.scroll_vertical
-			if store.set_equipped(ids): show_loadout(collection_only))
-	scroll.set_deferred("scroll_vertical",_loadout_scroll)
-	_button("equip_all","全部装备",Rect2(215,665,205,48),func(): store.set_equipped(store.collection.map(func(c): return c.id)); show_loadout(collection_only),p)
-	_button("loadout_cancel","返回",Rect2(450,665,205,48),cancel_loadout,p)
-	var confirm = _button("loadout_confirm","完成" if collection_only else "确认装备 · 开战",Rect2(895,665,330,48),cancel_loadout if collection_only else confirm_loadout,p)
-	confirm.disabled = not collection_only and store.equipped_ids.is_empty()
-
-func cancel_loadout() -> void:
-	if not _loadout_only:
-		world.leave_encounter(encounter)
-		world.set_player_position(Vector2(run.position[0],run.position[1]))
-	_resume_dialog()
-
-func confirm_loadout() -> bool:
-	if _authority_mode(): return false
-	if mode != "loadout" or store.equipped_ids.is_empty(): return false
-	var candidate = run.duplicate(true)
-	candidate.in_battle = true
-	if not _commit(candidate,{},"","",false): return false
-	if not spatial.start(encounter,{"hp":int(run.hp),"loadout":store.get_loadout(),"upgrades":run.upgrades,"relaxed_focus":store.data.get("relaxed_focus",false)}): return false
-	_clear_dialog()
-	mode = "battle"
 	_build_hud()
-	return true
-
-func _finish_battle() -> void:
-	var victory = combat.status == "won"
-	if not victory:
-		spatial.set_paused(true)
-		mode = "defeat"
-		var p = _panel("重整脚步", "已获得的卡牌与记录仍然保留。")
-		_button("retry","返回检查点",Rect2(425,645,290,58),retry_checkpoint,p)
-		_button("menu","主界面",Rect2(745,645,270,58),leave_to_menu,p)
-		return
-	var candidate = run.duplicate(true)
-	candidate.hp = combat.hp
-	candidate.in_battle = false
-	_position_into(candidate)
-	if not encounter in candidate.completed:
-		candidate.completed.append(encounter)
-		candidate.coins += 10 if encounter == "tutorial" else (20 if encounter in ["stairs","patrol"] else 0)
-	var source = "chapter1:battle:"+encounter
-	candidate.pending_reward = encounter if encounter not in ["tutorial","boss"] and not source in store.claimed_rewards else ""
-	candidate.pending_upgrade = encounter == "elite" and not candidate.get("elite_upgrade_used",false)
-	var metadata = {"lamp_lit":true} if encounter == "lamp" else {}
-	if encounter == "lamp": candidate.lamp_lit = true
-	if not _commit(candidate,metadata):
-		spatial.set_paused(true)
-		mode = "save_error"
-		var p = _panel("保存未完成",last_error)
-		_button("retry_save","重试保存",Rect2(535,640,370,58),func(): mode="battle"; _finish_battle(),p)
-		return
-	spatial.finish(true)
-	world.apply_run(run)
-	mode = "explore"
-	_build_hud()
-	if not run.pending_reward.is_empty(): _show_reward()
-	elif run.pending_upgrade: _show_upgrade("elite",0)
 
 func retry_checkpoint() -> void:
-	if spatial != null: spatial.finish()
 	var candidate = checkpoint.duplicate(true)
-	candidate.in_battle = false
 	if not _commit(candidate): return
 	world.configure(run)
-	world.leave_encounter(encounter)
-	if _authority_mode():
-		_authority_resolved_hits.clear()
-		world.reset_enemy_encounters()
-		for target_id in world.temporal.get_presentation().targets:
-			world.temporal.reset_target_history(target_id)
+	_authority_resolved_hits.clear()
+	world.reset_enemy_encounters()
+	for target_id in world.temporal.get_presentation().targets:
+		world.temporal.reset_target_history(target_id)
 	_resume_dialog()
 
 func _authority_enemy_hit(_enemy_id: String, attack_id: String, damage: int) -> void:
-	if not _authority_mode() or mode != "explore" or suspended or damage <= 0:
+	if mode != "explore" or suspended or damage <= 0:
 		return
 	if _authority_resolved_hits.has(attack_id): return
 	_authority_resolved_hits[attack_id] = true
@@ -602,50 +359,14 @@ func _authority_enemy_hit(_enemy_id: String, attack_id: String, damage: int) -> 
 		_button("retry","返回检查点",Rect2(425,645,290,58),retry_checkpoint,panel)
 		_button("menu","主界面",Rect2(745,645,270,58),leave_to_menu,panel)
 
-func _reward_types(id: String) -> Array:
-	if id == "stairs": return ["ignite","heavy_shield","charge"]
-	if id in ["lamp","elite"]: return ["echo","delay"]
-	if id == "corridor": return ["fire","shield","ember"]
-	return ["ember","ember_shield","ignite"]
-
-func _show_reward() -> void:
-	if _authority_mode(): return
-	mode = "reward"
-	var id = str(run.pending_reward)
-	var p = _panel("新的权柄刻印", "选择一张卡牌，永久加入收藏。新卡可在下一场战斗前装备。")
-	var types = _reward_types(id)
-	var catalog = combat.get_card_catalog()
-	for i in types.size():
-		var kind = str(types[i])
-		var card = Card.new()
-		card.position = Vector2(270+i*310,360)
-		card.size = Vector2(280,230)
-		p.add_child(card)
-		card.configure(catalog[kind].merged({"type":kind}))
-		card.pressed.connect(func(): claim_reward(kind))
-		_button("reward_"+kind,"收藏",Rect2(270+i*310,620,280,48),func(): claim_reward(kind),p)
-
-func claim_reward(kind: String) -> bool:
-	if _authority_mode(): return false
-	var id = str(run.get("pending_reward",""))
-	if id.is_empty() or not kind in _reward_types(id): return false
-	var candidate = run.duplicate(true)
-	candidate.pending_reward = ""
-	if not _commit(candidate,{},"chapter1:battle:"+id,kind): return false
-	if run.pending_upgrade: _show_upgrade("elite",0)
-	else: _resume_dialog()
-	return true
-
 func _interact(id: String) -> void:
 	if mode != "explore": return
-	if _authority_mode() and id == "stalled_device":
+	if id == "stalled_device":
 		_show_device()
 		return
-	if _authority_mode() and (id.begins_with("supply_") or id == "rest"):
+	if id.begins_with("supply_") or id == "rest":
 		_show_authority_inspection(id)
 		return
-	if id.begins_with("supply_"): _show_supply(id); return
-	if id == "rest": _show_rest(); return
 	if id == "final_dial": _show_dial(); return
 	var candidate = run.duplicate(true)
 	_position_into(candidate)
@@ -707,98 +428,10 @@ func _show_anchored_slice() -> void:
 	var p = _panel("锚定时", "暮笙的手停在撤离钟的刻度前，时间锚已经启动。\n\n这一切片说明锚在循环中的存在，不能单独裁定两份记录的先后关系。")
 	_button("continue","继续探索",Rect2(860,655,340,55),_resume_dialog,p)
 
-func _price(kind: String) -> int:
-	return 45 if kind in ["echo","delay"] else 40 if kind == "heavy_shield" else 35 if kind in ["ember","ignite","ember_shield"] else 30
-
-func _show_supply(id: String) -> void:
-	if _authority_mode(): return
-	mode = "shop"
-	var p = _panel("权柄工坊", "结晶 %d · 每个来源限购一次" % run.coins)
-	var node = 3 if id == "supply_lamp" else 5
-	var catalog = combat.get_card_catalog()
-	for i in TYPES.size():
-		var kind = str(TYPES[i])
-		var claimed = "chapter1:shop:%d:%s" % [node,kind] in store.claimed_rewards
-		var b = _button("buy_"+kind,catalog[kind].name+(" · 已领取" if claimed else " · %d" % _price(kind)),Rect2(215+i%3*342,330+int(i/3)*83,322,63),func(): buy_card(id,kind); _show_supply(id),p)
-		b.disabled = claimed or int(run.coins)<_price(kind)
-	_button("upgrade","升级实体 · 20结晶",Rect2(215,650,360,55),func(): _show_upgrade(id,20),p)
-	_button("continue","继续探索",Rect2(865,650,360,55),_resume_dialog,p)
-
-func buy_card(id: String, kind: String) -> bool:
-	if _authority_mode(): return false
-	if not kind in TYPES or int(run.coins)<_price(kind): return false
-	var candidate = run.duplicate(true)
-	_position_into(candidate)
-	candidate.coins -= _price(kind)
-	var source = "chapter1:shop:%d:%s" % [3 if id == "supply_lamp" else 5,kind]
-	return _commit(candidate,{},source,kind)
-
-func _show_rest() -> void:
-	if _authority_mode(): return
-	mode = "rest"
-	var p = _panel("钟楼休整处", "此处已经休整过。" if run.rest_used else "回复15生命，或升级一个已装备实体。支付20结晶可以同时进行。")
-	if not run.rest_used:
-		_button("heal","回复生命",Rect2(215,560,300,55),rest_heal,p)
-		_button("rest_upgrade","升级实体",Rect2(550,560,300,55),func(): _show_upgrade("rest",0),p)
-		var b = _button("rest_both","同时进行 · 20结晶",Rect2(885,560,340,55),func(): _show_upgrade("rest_both",20),p)
-		b.disabled = int(run.coins)<20
-	_button("continue","继续探索",Rect2(865,660,360,55),_resume_dialog,p)
-
-func rest_heal() -> bool:
-	if _authority_mode(): return false
-	if run.rest_used: return false
-	var candidate = run.duplicate(true)
-	_position_into(candidate)
-	candidate.rest_used = true
-	candidate.hp = mini(50,int(candidate.hp)+15)
-	if not _commit(candidate): return false
-	_resume_dialog()
-	return true
-
-func _show_upgrade(origin: String, price: int) -> void:
-	if _authority_mode(): return
-	mode = "upgrade"
-	var p = _panel("雕刻权柄", "本次探索中，每张实体卡只可升级一次。")
-	var scroll = ScrollContainer.new()
-	scroll.position = Vector2(215,330)
-	scroll.size = Vector2(1010,285)
-	p.add_child(scroll)
-	var grid = GridContainer.new()
-	grid.columns = 4
-	grid.add_theme_constant_override("h_separation",10)
-	grid.add_theme_constant_override("v_separation",10)
-	scroll.add_child(grid)
-	var catalog = combat.get_card_catalog()
-	for card in store.get_loadout():
-		var id = str(card.id)
-		var b = _button("upgrade_"+id,catalog[card.type].name+(" · 已升级" if run.upgrades.has(id) else ""),Rect2(0,0,235,72),func(): upgrade_card(id,origin,price),grid)
-		b.custom_minimum_size = Vector2(235,72)
-		b.disabled = run.upgrades.has(id) or int(run.coins)<price
-	_button("continue","稍后处理" if origin == "elite" else "返回",Rect2(865,665,360,48),_resume_dialog,p)
-
-func upgrade_card(id: String, origin: String, price: int) -> bool:
-	if _authority_mode(): return false
-	if not id in store.equipped_ids or run.upgrades.has(id) or int(run.coins)<price: return false
-	if origin in ["rest","rest_both"] and run.rest_used: return false
-	if origin == "elite" and run.elite_upgrade_used: return false
-	var candidate = run.duplicate(true)
-	_position_into(candidate)
-	candidate.coins -= price
-	candidate.upgrades[id] = 1
-	if origin in ["rest","rest_both"]: candidate.rest_used = true
-	if origin == "rest_both": candidate.hp = mini(50,int(candidate.hp)+15)
-	if origin == "elite":
-		candidate.elite_upgrade_used = true
-		candidate.pending_upgrade = false
-	if not _commit(candidate): return false
-	_resume_dialog()
-	return true
-
 func _show_dial() -> void:
-	if _authority_mode() and not "boss" in run.completed:
+	if not "boss" in run.completed:
 		_show_authority_inspection("final_dial")
 		return
-	if not "boss" in run.completed: return
 	mode = "ending"
 	var p = _panel("拨向明天", "暮笙与月璃站在指针旁。\n\n“我们还是没能救回那一次失去。”\n“但他们终于可以过完黄昏，认真道别，然后走进夜色。”\n\n失去的经历不会被改写。")
 	_button("dial","拨针 · 迎来第一个夜晚",Rect2(710,655,480,55),_show_records,p)
@@ -834,9 +467,7 @@ func show_pause() -> void:
 	var p = _panel("暂歇")
 	_button("resume","继续探索",Rect2(485,310,470,55),_resume_dialog,p)
 	if _pause_return == "explore":
-		if not _authority_mode(): _button("collection","显现权柄",Rect2(485,385,470,55),func(): show_loadout(true),p)
 		_button("journal","探索手札",Rect2(485,460,470,55),show_journal,p)
-		if not _authority_mode() and run.pending_upgrade: _button("pending_upgrade","领取精英升级",Rect2(485,535,470,50),func(): _show_upgrade("elite",0),p)
 	_button("menu","返回主界面",Rect2(485,625,470,55),leave_to_menu,p)
 
 func show_journal() -> void:
@@ -847,7 +478,7 @@ func show_journal() -> void:
 
 func leave_to_menu() -> void:
 	if mode == "pause": _resume_dialog()
-	if mode not in ["battle","defeat","opening"] and not (_pause_return == "battle" and mode == "pause"): _save_checkpoint()
+	if mode not in ["defeat","opening"]: _save_checkpoint()
 	suspend_session()
 	return_to_menu.emit()
 
@@ -858,9 +489,6 @@ func suspend_session() -> void:
 	if world != null:
 		world.set_paused(true)
 		world.visible = false
-	if spatial != null:
-		spatial.set_paused(true)
-		spatial.visible = false
 	if is_instance_valid(opening): opening.set_process(false)
 	get_viewport().canvas_transform = Transform2D.IDENTITY
 
@@ -869,16 +497,13 @@ func resume_session() -> void:
 	hud.visible = true
 	if world != null:
 		world.visible = true
-		world.set_paused(not mode in ["explore","battle"])
-	if spatial != null:
-		spatial.visible = true
-		if mode == "battle": spatial.set_paused(false)
+		world.set_paused(mode != "explore")
 	if is_instance_valid(opening): opening.set_process(true)
 
 func presentation_state() -> Dictionary:
-	return {"mode":mode,"run":run.duplicate(true),"suspended":suspended,"deck_open":deck_open,"world":world.presentation_state() if world != null else {},"combat":combat.get_snapshot() if mode == "battle" else {},"last_error":last_error}
+	return {"mode":mode,"run":run.duplicate(true),"suspended":suspended,"deck_open":deck_open,"world":world.presentation_state() if world != null else {},"last_error":last_error}
 
-func _build_authority_hud() -> void:
+func _build_hud() -> void:
 	if is_instance_valid(battle_hud):
 		canvas.remove_child(battle_hud)
 		battle_hud.queue_free()
@@ -922,7 +547,7 @@ func _build_authority_hud() -> void:
 	_update_hud()
 
 func _repair_device() -> bool:
-	if not _authority_mode() or run.get("authority_unlocked",false) or int(run.get("authority_tutorial_step",0)) < 2: return false
+	if run.get("authority_unlocked",false) or int(run.get("authority_tutorial_step",0)) < 2: return false
 	var candidate = run.duplicate(true)
 	_position_into(candidate)
 	candidate.authority_tutorial_step = 3
