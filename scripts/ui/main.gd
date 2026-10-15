@@ -113,8 +113,8 @@ func show_time_authority_collection():
 		var catalog = Temporal.card_catalog()
 		for i in gifts.size():
 			var face = TimeCard.new()
-			face.position = Vector2(258+i*315, 310)
-			face.size = Vector2(282, 260)
+			face.card_scale = 0.9
+			face.position = Vector2(292.5+i*315, 280)
 			page.add_child(face)
 			for entry in catalog:
 				if entry.id == gifts[i].type: face.configure(entry)

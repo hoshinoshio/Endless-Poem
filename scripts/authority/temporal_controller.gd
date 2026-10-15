@@ -16,9 +16,9 @@ func _init(config: Dictionary = {}) -> void:
 
 static func card_catalog() -> Array:
 	return [
-		{"id": "stop", "title": "停止时间", "icon": "pause", "description": "暂停所选对象的局部时间。"},
-		{"id": "fast_forward", "title": "快进时间", "icon": "forward", "description": "加速所选对象的局部时间。"},
-		{"id": "reverse", "title": "倒退时间", "icon": "reverse", "description": "沿所选对象已有记录倒退。"},
+		{"id": "stop", "title": "停止时间", "icon": "pause", "authority": "time", "description": "使所选对象的局部时间停止 2 秒。"},
+		{"id": "fast_forward", "title": "快进时间", "icon": "forward", "authority": "time", "description": "使所选对象的局部时间加速推进。"},
+		{"id": "reverse", "title": "倒退时间", "icon": "reverse", "authority": "time", "description": "使所选对象回到 3 秒前的状态。"},
 	]
 
 func register_target(id: String, label: String, screen_rect: Callable, capture: Callable, restore: Callable, advance_local: Callable) -> bool:

@@ -517,8 +517,8 @@ func _build_hud() -> void:
 	hp_bar.value = run.get("hp",50)
 	deck_open = false
 	deck_scroll = ScrollContainer.new()
-	deck_scroll.position = Vector2(300,700)
-	deck_scroll.size = Vector2(490,135)
+	deck_scroll.position = Vector2(296,620)
+	deck_scroll.size = Vector2(490,218)
 	deck_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	deck_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	deck_scroll.visible = false
@@ -526,7 +526,12 @@ func _build_hud() -> void:
 	var grid = GridContainer.new()
 	grid.columns = 3
 	grid.add_theme_constant_override("h_separation",12)
-	deck_scroll.add_child(grid)
+	# Leave room for the selected card's outer outline inside the scroll clip.
+	var margin = MarginContainer.new()
+	for edge in ["left", "top", "right", "bottom"]:
+		margin.add_theme_constant_override("margin_" + edge,4)
+	deck_scroll.add_child(margin)
+	margin.add_child(grid)
 	var catalog = {}
 	for card in Temporal.card_catalog(): catalog[card.id] = card
 	if run.get("authority_unlocked",false):
