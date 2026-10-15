@@ -4,8 +4,6 @@ signal return_to_menu
 const World = preload("res://scripts/exploration/exploration_world.gd")
 const Opening = preload("res://scripts/onboarding/opening_sequence.gd")
 const AuthorityTutorial = preload("res://scripts/onboarding/authority_tutorial.gd")
-const TimeCard = preload("res://scripts/authority/time_card.gd")
-const Temporal = preload("res://scripts/authority/temporal_controller.gd")
 const FONT = preload("res://assets/fonts/SourceHanSansSC-Regular.otf")
 const ForkGuidance = preload("res://scripts/exploration/fork_guidance.gd")
 var store
@@ -21,10 +19,13 @@ var suspended = false
 var run: Dictionary = {}
 var checkpoint: Dictionary = {}
 var card_buttons: Dictionary = {}
-var deck_scroll: ScrollContainer
-var authority_button: Button
+const DragHand = preload("res://scripts/authority/drag_cast_hand.gd")
+const CardConfig = preload("res://scripts/authority/time_card_config.gd")
+const NpcAttitude = preload("res://scripts/exploration/npc_attitude.gd")
+var attitude = NpcAttitude.new()
+var hand: Control
+var drag_card := ""
 var hp_bar: ProgressBar
-var deck_open = false
 var _jump = false
 var _autosave = 0.0
 var _ui_elapsed = 0.0
@@ -86,10 +87,18 @@ func _new_run() -> void:
 	if is_instance_valid(opening): opening.queue_free(); opening = null
 	if is_instance_valid(boot_error): boot_error.queue_free(); boot_error = null
 
+func _create_world():
+	return World.new()
+
 func _build_world() -> void:
-	world = World.new()
+	world = _create_world()
 	add_child(world)
 	world.configure(run)
+	attitude.load_run(run)
+	world.set_npc_hostile(bool(attitude.entry("musheng").hostile))
+	world.world_advanced.connect(attitude.advance)
+	world.temporal.card_applied.connect(_card_applied)
+	world.forced_cancel.connect(cancel_drag)
 	world.interaction_requested.connect(_interact)
 	world.enemy_attack_hit.connect(_authority_enemy_hit)
 	world.branch_chosen.connect(_branch_chosen)
@@ -107,6 +116,7 @@ func _build_world() -> void:
 	_build_hud()
 
 func _commit(candidate: Dictionary, metadata: Dictionary = {}) -> bool:
+	if world != null: attitude.save_into(candidate)
 	var safe = candidate.duplicate(true)
 	if not store.commit_exploration(candidate,safe,metadata):
 		last_error = store.last_error
@@ -172,9 +182,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
 		var key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
 		if key == KEY_ESCAPE:
-			if mode == "explore" and not world.temporal.selected_card.is_empty():
-				world.temporal.cancel_selection()
-			elif mode == "explore" and deck_open: toggle_deck()
+			if mode == "explore" and (not drag_card.is_empty() or (is_instance_valid(hand) and not hand.pending.is_empty())):
+				cancel_drag()
 			elif mode in ["pause", "dialog", "device", "device_complete", "inspection", "journal"]: _resume_dialog()
 			elif mode == "explore": show_pause()
 			get_viewport().set_input_as_handled()
@@ -187,12 +196,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif key in [KEY_W,KEY_S] and mode == "explore":
 			if world.choose_branch(-1 if key == KEY_W else 1):
 				get_viewport().set_input_as_handled()
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and mode == "explore":
-		var target = world.temporal.target_at_point(event.position)
-		if not target.is_empty():
-			confirm_target(target)
-			get_viewport().set_input_as_handled()
-
 func _update_fork_guidance(delta: float) -> void:
 	if not is_instance_valid(fork_guidance) or world == null: return
 	var context: Dictionary = world.proximity_fork()
@@ -268,22 +271,67 @@ func _bar(rect: Rect2, parent: Control) -> ProgressBar:
 func _update_hud() -> void:
 	if not is_instance_valid(battle_hud): return
 	if is_instance_valid(hp_bar): hp_bar.value = run.get("hp",50)
-	for id in card_buttons:
-		card_buttons[id].set_selected(world.temporal.selected_card == id)
 
-func toggle_deck() -> void:
-	if mode != "explore" or not run.get("authority_unlocked",false): return
-	deck_open = not deck_open
-	deck_scroll.visible = deck_open
-	if not deck_open: world.temporal.cancel_selection()
+func begin_drag(id: String) -> bool:
+	if suspended or mode != "explore" or not drag_card.is_empty() or not world.temporal.can_cast(id): return false
+	drag_card = id
+	world.world_time_scale = CardConfig.DRAG_TIME_SCALE
+	return true
 
-func choose_card(id: String) -> void:
-	if mode == "explore": world.temporal.select_card(id); _update_hud()
+func release_drag(point: Vector2) -> bool:
+	if drag_card.is_empty(): return false
+	var id := drag_card
+	var target: String = world.temporal.target_at_point(point)
+	# Restore immediately, before card callbacks can open a modal or write progress.
+	drag_card = ""
+	world.world_time_scale = 1.0
+	var success: bool = mode == "explore" and not suspended and world.temporal.apply_card(id, target)
+	if success: world.play_player_action("cast")
+	if is_instance_valid(hand): hand.finish(id, success)
+	return success
 
-func confirm_target(id: String) -> void:
-	if mode == "explore":
-		if world.temporal.select_target(id): world.play_player_action("cast")
-		_update_hud()
+func cancel_drag() -> void:
+	var id := drag_card
+	drag_card = ""
+	if world != null:
+		world.world_time_scale = 1.0
+		world.temporal.cancel_selection()
+	if is_instance_valid(hand): hand.finish(id, false)
+
+func _exit_tree() -> void:
+	cancel_drag()
+
+func _card_applied(card_id: String, target: String, _category: String) -> void:
+	if target != "musheng": return
+	var previous: Dictionary = attitude.npcs.duplicate(true)
+	var result: Dictionary = attitude.apply(target, CardConfig.CARDS[card_id].nature.npc)
+	var gifts: Array = attitude.claim_gift(target)
+	if not _persist_attitude([], gifts):
+		attitude.npcs = previous
+		return
+	world.set_npc_hostile(bool(attitude.entry(target).hostile))
+	if result.changed and is_instance_valid(hand): hand.show_reaction(result.tier)
+
+func _persist_attitude(evidence: Array = [], gifts: Array = []) -> bool:
+	var candidate := run.duplicate(true)
+	attitude.save_into(candidate)
+	var safe := checkpoint.duplicate(true)
+	attitude.save_into(safe)
+	var all_evidence: Array = store.data.get("evidence", []).duplicate()
+	for item in evidence:
+		if not item in all_evidence: all_evidence.append(item)
+	var log: Array = candidate.get("gifts_received", []).duplicate()
+	for item in gifts:
+		if not item in log: log.append(item)
+	candidate.gifts_received = log
+	safe.gifts_received = log.duplicate()
+	if not store.commit_exploration(candidate, safe, {"evidence": all_evidence}):
+		last_error = store.last_error
+		return false
+	run = candidate
+	checkpoint = safe
+	world.apply_run(run)
+	return true
 
 func _clear_dialog() -> void:
 	if is_instance_valid(dialog):
@@ -297,9 +345,7 @@ func _panel(title: String, body: String = "") -> Control:
 	if is_instance_valid(fork_guidance): fork_guidance.hide()
 	_jump = false
 	world.set_movement_input(0, false)
-	world.temporal.cancel_selection()
-	deck_open = false
-	if is_instance_valid(deck_scroll): deck_scroll.visible = false
+	cancel_drag()
 	if is_instance_valid(battle_hud): battle_hud.visible = false
 	if is_instance_valid(tutorial): tutorial.visible = false
 	world.set_paused(true)
@@ -361,6 +407,18 @@ func _authority_enemy_hit(_enemy_id: String, attack_id: String, damage: int) -> 
 
 func _interact(id: String) -> void:
 	if mode != "explore": return
+	if id == "testimony":
+		if not attitude.can_interact("musheng"): return
+		if int(attitude.entry("musheng").value) <= -20:
+			mode = "dialog"
+			var cold = _panel("暮笙", "……现在没什么可说的。")
+			_button("continue", "继续探索", Rect2(860,655,340,55), _resume_dialog, cold)
+			return
+		var previous: Dictionary = attitude.npcs.duplicate(true)
+		var rewards: Dictionary = attitude.interaction_rewards("musheng")
+		if not _persist_attitude(rewards.evidence, rewards.gifts):
+			attitude.npcs = previous
+			return
 	if id == "stalled_device":
 		_show_device()
 		return
@@ -386,6 +444,8 @@ func _interact(id: String) -> void:
 		"testimony":["暮笙的证词","观测员暮笙记得每一次循环。她启动时间锚，是想留住没有失去任何人的黄昏。\n\n《观测环刻录》：桥先断，钟后响。\n《暮笙手记》：钟先响，众人想看完星升。\n\n已取得值守名单。两份记录仍待核对。"],
 		"anchor_key":["锚的钥匙","克洛诺斯：从这一刻起，我将作为考官。刻度、锚定、残响——让我看见你如何继续前进、保留状态、保存记忆。\n\n已取得锚的钥匙。时间锚可被单体攻击击破。"]}
 	if not entries.has(id): return
+	if id == "testimony" and int(attitude.entry("musheng").value) >= 20:
+		entries[id][1] += "\n\n" + NpcAttitude.EXTRA
 	mode = "dialog"
 	var p = _panel(entries[id][0],entries[id][1])
 	if id.begins_with("bridge_") and int(store.data.get("visits",0))>1:
@@ -472,7 +532,7 @@ func show_pause() -> void:
 
 func show_journal() -> void:
 	mode = "journal"
-	var text = "已证实\n"+"、".join(store.data.get("evidence",[]))+"\n\n转述 / 待核对\n《观测环刻录》：桥先断，钟后响。\n《暮笙手记》：钟先响，众人想看完星升。\n\n观察时间切片不会改写救援的失败。"
+	var text = "赠礼\n"+"、".join(run.get("gifts_received",[]))+"\n\n已证实\n"+"、".join(store.data.get("evidence",[]))+"\n\n转述 / 待核对\n《观测环刻录》：桥先断，钟后响。\n《暮笙手记》：钟先响，众人想看完星升。\n\n观察时间切片不会改写救援的失败。"
 	var p = _panel("探索手札",text)
 	_button("continue","继续探索",Rect2(865,655,360,55),_resume_dialog,p)
 
@@ -484,6 +544,7 @@ func leave_to_menu() -> void:
 
 func suspend_session() -> void:
 	if suspended: return
+	cancel_drag()
 	suspended = true
 	hud.visible = false
 	if world != null:
@@ -501,9 +562,10 @@ func resume_session() -> void:
 	if is_instance_valid(opening): opening.set_process(true)
 
 func presentation_state() -> Dictionary:
-	return {"mode":mode,"run":run.duplicate(true),"suspended":suspended,"deck_open":deck_open,"world":world.presentation_state() if world != null else {},"last_error":last_error}
+	return {"mode":mode,"run":run.duplicate(true),"suspended":suspended,"drag_card":drag_card,"world":world.presentation_state() if world != null else {},"last_error":last_error}
 
 func _build_hud() -> void:
+	cancel_drag()
 	if is_instance_valid(battle_hud):
 		canvas.remove_child(battle_hud)
 		battle_hud.queue_free()
@@ -512,43 +574,14 @@ func _build_hud() -> void:
 	battle_hud.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	canvas.add_child(battle_hud)
 	card_buttons.clear()
-	hp_bar = _bar(Rect2(300,854,490,8),battle_hud)
+	hp_bar = _bar(Rect2(30,854,270,8),battle_hud)
 	hp_bar.max_value = 50
 	hp_bar.value = run.get("hp",50)
-	deck_open = false
-	deck_scroll = ScrollContainer.new()
-	deck_scroll.position = Vector2(296,620)
-	deck_scroll.size = Vector2(490,218)
-	deck_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	deck_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	deck_scroll.visible = false
-	battle_hud.add_child(deck_scroll)
-	var grid = GridContainer.new()
-	grid.columns = 3
-	grid.add_theme_constant_override("h_separation",12)
-	# Leave room for the selected card's outer outline inside the scroll clip.
-	var margin = MarginContainer.new()
-	for edge in ["left", "top", "right", "bottom"]:
-		margin.add_theme_constant_override("margin_" + edge,4)
-	deck_scroll.add_child(margin)
-	margin.add_child(grid)
-	var catalog = {}
-	for card in Temporal.card_catalog(): catalog[card.id] = card
-	if run.get("authority_unlocked",false):
-		for entity in store.get_authority_loadout():
-			var kind = str(entity.get("type",""))
-			if not catalog.has(kind): continue
-			var face = TimeCard.new()
-			grid.add_child(face)
-			face.configure(catalog[kind])
-			face.card_clicked.connect(choose_card)
-			card_buttons[kind] = face
-	authority_button = _button("authority","",Rect2(182,715,96,96),toggle_deck,battle_hud)
-	var clock = SilverClock.new()
-	clock.position = Vector2(7,7)
-	clock.size = Vector2(82,82)
-	authority_button.add_child(clock)
-	authority_button.visible = bool(run.get("authority_unlocked",false))
+	hand = DragHand.new()
+	battle_hud.add_child(hand)
+	hand.configure(self)
+	hand.visible = bool(run.get("authority_unlocked", false))
+	if run.get("authority_unlocked", false): card_buttons = hand.faces
 	_update_hud()
 
 func _repair_device() -> bool:
@@ -570,19 +603,3 @@ func _repair_device() -> bool:
 	tutorial.configure(3)
 	_build_hud()
 	return true
-
-class SilverClock extends Control:
-	func _ready() -> void:
-		mouse_filter = Control.MOUSE_FILTER_IGNORE
-	func _draw() -> void:
-		var center = size * 0.5
-		var radius = minf(size.x,size.y) * 0.43
-		var silver = Color("e6edf4")
-		draw_circle(center,radius,Color("101e30"))
-		draw_arc(center,radius,0,TAU,64,silver,1.5,true)
-		for index in 12:
-			var direction = Vector2.from_angle(index * TAU / 12.0 - PI / 2.0)
-			draw_line(center+direction*radius*0.78,center+direction*radius*0.9,silver,1,true)
-		draw_line(center,center+Vector2(0,-radius*0.65),silver,2,true)
-		draw_line(center,center+Vector2(radius*0.45,radius*0.2),silver,2,true)
-		draw_circle(center,2,silver)

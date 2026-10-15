@@ -72,8 +72,7 @@ func test_world() -> void:
 	world.advance_simulation(0.1)
 	phase = world.ambient.objects.cloud_0.phase
 	world.temporal.apply_card("reverse","cloud_0")
-	world.advance_simulation(0.1)
-	check(world.ambient.objects.cloud_0.phase<phase,"cloud reverses captured history")
+	check(world.ambient.objects.cloud_0.phase<phase,"cloud instantly reverses captured history")
 	world.temporal.reset_target("cloud_0")
 	world.set_paused(true)
 	phase = world.ambient.objects.cloud_0.phase

@@ -51,6 +51,11 @@ func run_test() -> void:
 		for factor in [0.9, 2.0, 0.6]:
 			face.card_scale = factor
 			check(face.custom_minimum_size.is_equal_approx(Vector2(250, 350) * factor) and face.design.scale.is_equal_approx(Vector2.ONE * factor), "scale updates layout and all design elements")
+		if index == 0:
+			face.compact = true
+			check(not face.description_label.visible, "compact hides description")
+			check(face.size.is_equal_approx(Vector2(250,238) * face.card_scale), "compact uses cropped design dimensions")
+			face.compact = false
 		var texture_before := face.gem.texture
 		face.set_selected(true)
 		check(face.selected and face.gem.texture == texture_before and face.modulate == Color.WHITE, "selection preserves face colors")
@@ -74,15 +79,14 @@ func run_test() -> void:
 	session._tutorial_event("walked", {})
 	session._tutorial_event("jump_landed", {})
 	check(session._repair_device(), "fixture unlocks three cards")
-	session.toggle_deck()
 	session.set_physics_process(false)
 	await process_frame
 	await process_frame
 	var previous := Rect2()
 	for face in session.card_buttons.values():
 		var rect: Rect2 = face.get_global_rect()
-		check(session.deck_scroll.get_global_rect().encloses(rect.grow(3)), "deck includes selected outline")
-		check(rect.end.y < session.hp_bar.get_global_rect().position.y and not rect.intersects(session.authority_button.get_global_rect()), "deck clears health and clock HUD")
+		check(session.hand.get_global_rect().encloses(rect.grow(3)), "hand includes card outline")
+		check(not rect.intersects(session.hp_bar.get_global_rect()), "hand clears health HUD")
 		check(not rect.intersects(previous), "deck cards do not overlap")
 		previous = rect
 	var main := Main.new()

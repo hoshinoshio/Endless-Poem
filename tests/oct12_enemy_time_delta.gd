@@ -32,7 +32,7 @@ func exercise() -> void:
 	session.configure(store,false)
 	session.set_physics_process(false)
 	world = session.world
-	world.temporal.apply_card("stop","player")
+	world.set_movement_input(0,false)
 	world.enemy_attack_hit.connect(func(enemy_id,attack_id,damage): hits.append({"enemy":enemy_id,"attack":attack_id,"damage":damage}))
 	world.previews.tutorial.visible = true
 	tick(0.1)
@@ -43,9 +43,11 @@ func exercise() -> void:
 	var enemy_rect: Rect2 = world.temporal.get_presentation().targets.enemy_tutorial.screen_rect
 	var player_rect: Rect2 = world.temporal.get_presentation().targets.player.screen_rect
 	var picked: String = world.temporal.target_at_point(enemy_rect.intersection(player_rect).get_center())
-	verify(picked == "enemy_tutorial","enemy body remains selectable where player overlaps it")
-	session.choose_card("stop")
-	session.confirm_target(picked)
+	verify(picked == "player","hero takes priority in overlapping bodies")
+	# Use the exposed top of the monster to cast without the hero overlap.
+	var cast_point := enemy_rect.position + Vector2(enemy_rect.size.x * 0.5, 8)
+	session.begin_drag("stop")
+	session.release_drag(cast_point)
 	var stopped: Dictionary = world._capture_enemy("tutorial")
 	var actor = world.previews.tutorial
 	var frame: int = actor.continuous_motion.frame_index
@@ -74,6 +76,7 @@ func exercise() -> void:
 	world.set_player_position(Vector2(2920,1900))
 	tick(0.1)
 	world.set_player_position(Vector2(2920,1700))
+	world.player.velocity.y = -world.player.JUMP_SPEED
 	tick(0.85)
 	verify(hits.size()==count,"jumping above actual low swipe avoids damage")
 	world.reset_enemy_encounters()

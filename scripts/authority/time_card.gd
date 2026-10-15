@@ -12,6 +12,10 @@ const ART_MASK = preload("res://scripts/authority/card_art_mask.gdshader")
 	set(value):
 		card_scale = maxf(value, 0.01)
 		_update_scale()
+@export var compact := false:
+	set(value):
+		compact = value
+		_update_scale()
 var card: Dictionary = {}
 var selected: bool = false
 var design: Control
@@ -21,6 +25,13 @@ var placeholder_clock: Control
 var gem: TextureRect
 var title_label: Label
 var description_label: Label
+var compact_edge: Control
+
+class CompactEdge extends Control:
+	func _draw() -> void:
+		var brass := Color("b99152")
+		draw_colored_polygon(PackedVector2Array([Vector2(0,228),Vector2(10,237),Vector2(240,237),Vector2(250,228),Vector2(250,244),Vector2(0,244)]), Color("111a30"))
+		draw_polyline(PackedVector2Array([Vector2(1,227),Vector2(11,236),Vector2(239,236),Vector2(249,227)]), brass, 2.0, true)
 
 class PlaceholderClock extends Control:
 	func _draw() -> void:
@@ -78,6 +89,9 @@ func _init() -> void:
 	# Inset the text within the 22..228 frame so short effects wrap into readable lines.
 	description_label = _label("Description", Rect2(50, 244, 150, 80), 14, Color("e8e3d6"))
 	description_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	compact_edge = CompactEdge.new()
+	compact_edge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	design.add_child(compact_edge)
 	_update_scale()
 	configure({})
 
@@ -106,7 +120,10 @@ func _label(node_name: String, rect: Rect2, font_size: int, color: Color) -> Lab
 	return label
 
 func _update_scale() -> void:
-	custom_minimum_size = DESIGN_SIZE * card_scale
+	clip_contents = compact
+	if is_instance_valid(compact_edge): compact_edge.visible = compact
+	if is_instance_valid(description_label): description_label.visible = not compact
+	custom_minimum_size = Vector2(250, 238 if compact else 350) * card_scale
 	size = custom_minimum_size
 	if is_instance_valid(design): design.scale = Vector2.ONE * card_scale
 	queue_redraw()
@@ -146,7 +163,7 @@ func _draw() -> void:
 	if not selected: return
 	# A two-screen-pixel outline outside the frame, independent of card scale.
 	var w := DESIGN_SIZE.x * card_scale
-	var h := DESIGN_SIZE.y * card_scale
+	var h := size.y
 	var cut := 13 * card_scale
 	var outline := PackedVector2Array([
 		Vector2(cut, -2), Vector2(w - cut, -2), Vector2(w + 2, cut),

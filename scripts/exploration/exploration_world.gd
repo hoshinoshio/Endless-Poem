@@ -23,6 +23,12 @@ var _enemy_attack_serials: Dictionary = {}
 var player: CharacterBody2D
 var camera: Camera2D
 var run: Dictionary = {}
+signal world_advanced(delta: float)
+signal forced_cancel
+var world_time_scale := 1.0
+var npc_hostile := false
+var npc_escape_remaining := 0.0
+var npc_escape_direction := 1.0
 var elapsed := 0.0
 var paused := false
 var current_region := 0
@@ -179,6 +185,9 @@ func _gate_open(gate: Dictionary) -> bool:
 			return false
 	return true
 func set_paused(value: bool) -> void:
+	if value:
+		world_time_scale = 1.0
+		forced_cancel.emit()
 	paused = value
 	temporal.set_paused(value)
 	if camera != null:
@@ -199,6 +208,8 @@ func set_movement_input(axis: float, jump_pressed: bool, running: bool = false) 
 func advance_simulation(sim_delta: float) -> void:
 	if paused or player == null or sim_delta <= 0:
 		return
+	sim_delta *= world_time_scale
+	world_advanced.emit(sim_delta)
 	# Substeps preserve collision accuracy and external battle-clock slowdown.
 	var remaining := 0.0 if _authority_mode() else sim_delta
 	if _authority_mode():
@@ -294,6 +305,7 @@ func _interaction_position(id: String) -> Vector2:
 	return _interactions.get(id,Vector2.ZERO)
 
 func _interaction_available(id: String) -> bool:
+	if id == "testimony" and npc_hostile: return false
 	if _authority_mode() and id == "stalled_device":
 		if int(run.get("authority_tutorial_step",0)) < 2 or not player.grounded or absf(player.position.y-1690)>10 or player.position.x<1760 or player.position.x>2050: return false
 	if id == "final_dial" and not _authority_mode() and not "boss" in run.get("completed",[]):
@@ -319,6 +331,13 @@ func proximity_interaction() -> Dictionary:
 	if id == "testimony": offset = 157.0
 	elif id == "stalled_device": offset = 172.0
 	return {"visible":true,"id":id,"key":"E","world_position":_interaction_position(id)-Vector2(0,offset)}
+
+func set_npc_hostile(value: bool) -> void:
+	if value and not npc_hostile:
+		npc_escape_remaining = 180.0
+		npc_escape_direction = 1.0 if observer_npc.position.x >= player.position.x else -1.0
+	npc_hostile = value
+	temporal.set_category("musheng", "monster" if value else "npc")
 
 func interact() -> void:
 	# Recheck physical proximity on the input frame; a cached hint cannot authorize interaction.
@@ -572,11 +591,11 @@ func _setup_time_targets() -> void:
 		_enemy_attack_serials[id] = 0
 		actor.set_motion_state("idle",Vector2.ZERO,-1.0)
 		_enemy_initial[id] = _capture_enemy(id)
-		temporal.register_target("enemy_"+id,"巡逻者 · "+id,func(): return _screen_rect(Rect2(actor.position-Vector2(90,220),Vector2(180,220))) if actor.visible else Rect2(),func(): return _capture_enemy(id),func(state): _restore_enemy(id,state),func(dt): _advance_enemy(id,dt))
+		temporal.register_target("enemy_"+id,"巡逻者 · "+id,func(): return _screen_rect(Rect2(actor.position-Vector2(90,220),Vector2(180,220))) if actor.visible else Rect2(),func(): return _capture_enemy(id),func(state): _restore_enemy(id,state),func(dt): _advance_enemy(id,dt),"monster")
 	for id in ambient.objects:
-		temporal.register_target(id,ambient.objects[id].label,func(): return _screen_rect(ambient.object_rect(id)),func(): return ambient.capture(id),func(state): ambient.restore(id,state),func(dt): ambient.advance_local(id,dt))
-	temporal.register_target("musheng","暮笙",func(): return _screen_rect(_npc_world_rect()),func(): return _capture_npc(),func(value): _restore_npc(value),func(dt): _advance_npc(dt))
-	temporal.register_target("player","月璃",func(): return _screen_rect(player.hitbox()),func(): return _capture_player(),func(state): _restore_player(state),func(dt): _advance_player_local(dt))
+		temporal.register_target(id,ambient.objects[id].label,func(): return _screen_rect(ambient.object_rect(id)),func(): return ambient.capture(id),func(state): ambient.restore(id,state),func(dt): ambient.advance_local(id,dt),"scene")
+	temporal.register_target("musheng","暮笙",func(): return _screen_rect(_npc_world_rect()),func(): return _capture_npc(),func(value): _restore_npc(value),func(dt): _advance_npc(dt),"npc")
+	temporal.register_target("player","月璃",func(): return _screen_rect(player.hitbox()),func(): return _capture_player(),func(state): _restore_player(state),func(dt): _advance_player_local(dt),"hero")
 
 func _pose_npc() -> void:
 	if observer_npc == null: return
@@ -612,6 +631,11 @@ func _restore_npc(value: Dictionary) -> void:
 
 func _advance_npc(delta: float) -> void:
 	if delta<=0 or observer_npc==null: return
+	var travel := minf(npc_escape_remaining, delta * 90.0)
+	if npc_hostile:
+		npc_escape_remaining -= travel
+		observer_npc.position.x += travel * npc_escape_direction
+		if observer_npc is PixelActor: observer_npc.set_motion_state("walk" if travel > 0.0 else "idle", Vector2(npc_escape_direction * 90.0, 0), npc_escape_direction)
 	_npc_clock += delta
 	if observer_npc is PixelActor:
 		if observer_npc.state=="talk":

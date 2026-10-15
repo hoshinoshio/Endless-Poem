@@ -21,15 +21,23 @@ func _ready() -> void:
 		face.configure(catalog[index])
 		face.set_selected(index == 1)
 		add_child(face)
-	_heading("七种权柄 · 探索尺寸 0.6 · 时间 = 群青，空间 = 琥珀", Vector2(70, 478), 19)
+	_heading("七种权柄 · 探索尺寸 0.6 · 时间 = 群青，空间 = 琥珀", Vector2(70, 600), 19)
 	var index := 0
 	for id in Palette.AUTHORITIES:
 		var face := Card.new()
 		face.name = "GemCard_" + id
-		face.position = Vector2(123 + index * 174, 536)
+		face.position = Vector2(123 + index * 174, 640)
 		face.configure({"id": id, "authority": id, "title": Palette.display_name(id) + " · 示例", "description": "权柄宝石与卡面布局示例。"})
 		add_child(face)
 		index += 1
+	_heading("紧凑手牌 · 0.55 · 上半卡面", Vector2(70, 450), 18)
+	for compact_index in catalog.size():
+		var face := Card.new()
+		face.compact = true
+		face.card_scale = 0.55
+		face.position = Vector2(400 + compact_index * 185, 450)
+		face.configure(catalog[compact_index])
+		add_child(face)
 	if "--capture-preview" in OS.get_cmdline_user_args():
 		_capture.call_deferred()
 
